@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from fastapi.responses import EventSourceResponse
+from sse_starlette.sse import EventSourceResponse
 import asyncio
 import json
 import random
