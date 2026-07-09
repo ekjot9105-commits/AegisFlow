@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import DashboardLayout from './layouts/DashboardLayout';
 import DashboardHome from './pages/DashboardHome';
 import LoadingSpinner from './components/ui/LoadingSpinner';
+import { ToastProvider } from './hooks/ToastContext';
 
 const VolunteerDashboard = lazy(() => import('./pages/VolunteerDashboard'));
 const Analytics = lazy(() => import('./pages/Analytics'));
@@ -50,47 +51,49 @@ function ProtectedRoute({ children, allowedRoles }: { children: ReactNode, allow
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<DashboardLayout />}>
-            <Route index element={<Navigate to="/dashboard" replace />} />
-            {/* RBAC Protected Operations Routes */}
-            <Route path="dashboard" element={
-              <ProtectedRoute allowedRoles={['admin', 'operator']}>
-                <DashboardHome />
-              </ProtectedRoute>
-            } />
-            <Route path="analytics" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <SuspenseWrapper><Analytics /></SuspenseWrapper>
-              </ProtectedRoute>
-            } />
-            <Route path="logs" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <SuspenseWrapper><SystemLogs /></SuspenseWrapper>
-              </ProtectedRoute>
-            } />
-            <Route path="ai-activity" element={
-              <ProtectedRoute allowedRoles={['admin', 'operator']}>
-                <SuspenseWrapper><AIActivityLog /></SuspenseWrapper>
-              </ProtectedRoute>
-            } />
-            <Route path="settings" element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <SuspenseWrapper><Settings /></SuspenseWrapper>
-              </ProtectedRoute>
-            } />
+      <ToastProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<DashboardLayout />}>
+              <Route index element={<Navigate to="/dashboard" replace />} />
+              {/* RBAC Protected Operations Routes */}
+              <Route path="dashboard" element={
+                <ProtectedRoute allowedRoles={['admin', 'operator']}>
+                  <DashboardHome />
+                </ProtectedRoute>
+              } />
+              <Route path="analytics" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <SuspenseWrapper><Analytics /></SuspenseWrapper>
+                </ProtectedRoute>
+              } />
+              <Route path="logs" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <SuspenseWrapper><SystemLogs /></SuspenseWrapper>
+                </ProtectedRoute>
+              } />
+              <Route path="ai-activity" element={
+                <ProtectedRoute allowedRoles={['admin', 'operator']}>
+                  <SuspenseWrapper><AIActivityLog /></SuspenseWrapper>
+                </ProtectedRoute>
+              } />
+              <Route path="settings" element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <SuspenseWrapper><Settings /></SuspenseWrapper>
+                </ProtectedRoute>
+              } />
 
-            {/* Public/Other Roles */}
-            <Route path="fan-portal" element={<SuspenseWrapper><FanPortal /></SuspenseWrapper>} />
-            <Route path="volunteers" element={
-              <ProtectedRoute allowedRoles={['admin', 'volunteer']}>
-                <SuspenseWrapper><VolunteerDashboard /></SuspenseWrapper>
-              </ProtectedRoute>
-            } />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+              {/* Public/Other Roles */}
+              <Route path="fan-portal" element={<SuspenseWrapper><FanPortal /></SuspenseWrapper>} />
+              <Route path="volunteers" element={
+                <ProtectedRoute allowedRoles={['admin', 'volunteer']}>
+                  <SuspenseWrapper><VolunteerDashboard /></SuspenseWrapper>
+                </ProtectedRoute>
+              } />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </ToastProvider>
     </QueryClientProvider>
   );
 }

@@ -3,10 +3,12 @@ import { fetchTimeline } from '../../services/dashboard';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 import Badge from '../ui/Badge';
 import SkeletonLoader from '../ui/SkeletonLoader';
-import { Train, Activity, BrainCircuit, CheckCircle, Megaphone } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Train, Activity, BrainCircuit, CheckCircle, Megaphone, ChevronDown, ChevronUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
 export default function IncidentTimeline() {
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const { data, isLoading } = useQuery({
     queryKey: ['timeline'],
     queryFn: fetchTimeline,
@@ -43,33 +45,68 @@ export default function IncidentTimeline() {
     <Card className="col-span-1 flex flex-col h-full min-h-[400px]">
       <CardHeader className="flex flex-row justify-between items-center pb-2">
         <CardTitle>Event Timeline</CardTitle>
-        <Badge variant="info">Live</Badge>
+        {data && data.length > 0 && <Badge variant="info">Live</Badge>}
       </CardHeader>
       <CardContent className="flex-1 overflow-y-auto pr-2 pb-4">
-        <div 
-          className="relative border-l border-white/10 ml-3 space-y-6 mt-4" 
-          aria-live="polite" 
-          aria-atomic="false"
-        >
-          {data?.map((event, index) => (
-            <motion.div 
-              key={event.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="relative pl-6"
-            >
-              <div className={`absolute -left-3.5 top-0.5 p-1.5 rounded-full ring-4 ring-background ${getIconColor(event.type)}`}>
-                {getIcon(event.type)}
-              </div>
-              <div className="flex justify-between items-start mb-1">
-                <h4 className="font-semibold text-sm leading-none">{event.title}</h4>
-                <span className="text-xs text-textSecondary tabular-nums">{event.timestamp}</span>
-              </div>
-              <p className="text-sm text-textSecondary">{event.description}</p>
-            </motion.div>
-          ))}
-        </div>
+        {(!data || data.length === 0) ? (
+          <div className="flex flex-col items-center justify-center h-full text-center text-textSecondary px-4 py-8">
+            <CheckCircle className="w-12 h-12 text-primary/30 mb-4" />
+            <p className="text-sm font-medium text-white mb-1">Stadium operations are running normally.</p>
+            <p className="text-xs max-w-[200px]">AI continues monitoring all sectors for anomalies.</p>
+          </div>
+        ) : (
+          <div 
+            className="relative border-l border-white/10 ml-3 space-y-6 mt-4" 
+            aria-live="polite" 
+            aria-atomic="false"
+          >
+            {data.map((event, index) => (
+              <motion.div 
+                key={event.id}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="relative pl-6 cursor-pointer group"
+                onClick={() => setExpandedId(expandedId === event.id ? null : event.id)}
+              >
+                <div className={`absolute -left-3.5 top-0.5 p-1.5 rounded-full ring-4 ring-background ${getIconColor(event.type)} transition-transform group-hover:scale-110`}>
+                  {getIcon(event.type)}
+                </div>
+                <div className="flex justify-between items-start mb-1">
+                  <h4 className="font-semibold text-sm leading-none group-hover:text-primary transition-colors">{event.title}</h4>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-textSecondary tabular-nums">{event.timestamp}</span>
+                    {expandedId === event.id ? <ChevronUp size={14} className="text-textSecondary" /> : <ChevronDown size={14} className="text-textSecondary" />}
+                  </div>
+                </div>
+                <p className="text-sm text-textSecondary">{event.description}</p>
+                
+                <AnimatePresence>
+                  {expandedId === event.id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden mt-3"
+                    >
+                      <div className="p-3 bg-white/5 rounded-lg border border-white/5 text-xs text-textSecondary">
+                        <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
+                          <span className="uppercase tracking-wider font-semibold">Event ID: {event.id}</span>
+                          <span className="text-primary">{event.type.toUpperCase()}</span>
+                        </div>
+                        <p className="leading-relaxed">
+                          This event was automatically classified and logged by AegisFlow Copilot. 
+                          {event.type === 'prediction' && " Preventative measures were immediately recommended."}
+                          {event.type === 'approved' && " The operator successfully validated the execution strategy."}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

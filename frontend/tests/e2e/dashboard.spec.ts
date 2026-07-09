@@ -4,7 +4,7 @@ test.describe('Dashboard AI Operations', () => {
   test('should load dashboard, display heatmap, and execute AI recommendation', async ({ page }) => {
     // 1. Dashboard loads successfully
     await page.goto('/');
-    await expect(page.getByText('ARENAOPS GENAI COMMAND')).toBeVisible();
+    await expect(page.getByText('AegisFlow')).toBeVisible();
 
     // 2. Stadium heatmap renders
     const heatmap = page.getByText('Live Stadium Heatmap');

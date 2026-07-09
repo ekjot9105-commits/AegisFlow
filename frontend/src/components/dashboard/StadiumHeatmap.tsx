@@ -19,12 +19,12 @@ const getRiskColor = (risk: string) => {
   }
 };
 
-const HeatmapNode = memo(({ id, x, y, risk, name, density, onHover, isHovered }: any) => {
+const HeatmapNode = memo(({ id, x, y, risk, name, density, prediction, recommendation, confidence, expected_crowd, queue_time, onHover, isHovered }: any) => {
   const color = getRiskColor(risk);
   
   return (
     <g 
-      onMouseEnter={() => onHover({ id, name, density, risk, x, y })} 
+      onMouseEnter={() => onHover({ id, name, density, risk, x, y, prediction, recommendation, confidence, expected_crowd, queue_time })} 
       onMouseLeave={() => onHover(null)}
       className="cursor-pointer outline-none"
       tabIndex={0}
@@ -259,20 +259,47 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
               initial={{ opacity: 0, y: 10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 10, scale: 0.95 }}
-              className="absolute glass-panel p-4 rounded-xl flex gap-6 items-center shadow-2xl z-20 pointer-events-none"
+              className="absolute glass-panel p-5 rounded-xl flex flex-col gap-4 shadow-2xl z-20 pointer-events-none min-w-[300px]"
               style={{ left: `50%`, top: `20px`, transform: `translateX(-50%)` }}
             >
-              <div>
-                <div className="text-xs text-textSecondary uppercase tracking-wider">{hoveredSector.name}</div>
-                <div className="font-bold text-lg text-white">{hoveredSector.id}</div>
+              {/* Top Row: Basic Info */}
+              <div className="flex gap-6 items-center border-b border-white/10 pb-3">
+                <div>
+                  <div className="text-xs text-textSecondary uppercase tracking-wider">{hoveredSector.name}</div>
+                  <div className="font-bold text-lg text-white">{hoveredSector.id}</div>
+                </div>
+                <div className="border-l border-white/10 pl-4">
+                  <div className="text-xs text-textSecondary uppercase">Density</div>
+                  <div className="font-bold text-white">{hoveredSector.density}%</div>
+                </div>
+                <div className="border-l border-white/10 pl-4">
+                  <div className="text-xs text-textSecondary uppercase">Risk Level</div>
+                  <div className="font-bold capitalize" style={{ color: getRiskColor(hoveredSector.risk) }}>{hoveredSector.risk}</div>
+                </div>
               </div>
-              <div className="border-l border-white/10 pl-4">
-                <div className="text-xs text-textSecondary uppercase">Density</div>
-                <div className="font-bold text-white">{hoveredSector.density}%</div>
-              </div>
-              <div className="border-l border-white/10 pl-4">
-                <div className="text-xs text-textSecondary uppercase">Risk Level</div>
-                <div className="font-bold capitalize" style={{ color: getRiskColor(hoveredSector.risk) }}>{hoveredSector.risk}</div>
+
+              {/* Bottom Row: AI Insights */}
+              <div className="grid grid-cols-2 gap-3 text-xs">
+                <div>
+                  <span className="text-textSecondary block mb-1">AI Prediction</span>
+                  <span className="font-medium text-white">{hoveredSector.prediction || 'Calculating...'}</span>
+                </div>
+                <div>
+                  <span className="text-textSecondary block mb-1">Queue Time</span>
+                  <span className="font-medium text-white">{hoveredSector.queue_time || '--'}</span>
+                </div>
+                <div>
+                  <span className="text-textSecondary block mb-1">10m Expected Crowd</span>
+                  <span className="font-medium text-white">{hoveredSector.expected_crowd || '--'}</span>
+                </div>
+                <div>
+                  <span className="text-textSecondary block mb-1">Confidence</span>
+                  <span className="font-medium text-accent">{hoveredSector.confidence ? `${hoveredSector.confidence}%` : '--'}</span>
+                </div>
+                <div className="col-span-2 mt-1 p-2 bg-primary/10 rounded border border-primary/20">
+                  <span className="text-primary font-semibold block mb-1">Actionable Recommendation</span>
+                  <span className="text-white">{hoveredSector.recommendation || 'No action needed'}</span>
+                </div>
               </div>
             </motion.div>
           )}

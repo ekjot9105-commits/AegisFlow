@@ -37,7 +37,7 @@ export default function DashboardLayout() {
       {/* Top Branding Bar */}
       <div className="h-8 bg-surface/80 border-b border-white/5 flex items-center justify-between px-4 text-xs font-semibold text-textSecondary tracking-wider">
         <div className="flex-1"></div>
-        <div className="flex-1 text-center">Smart Stadium & Tournament Operations</div>
+        <div className="flex-1 text-center font-bold tracking-widest text-primary/80">FIFA World Cup 2026 Smart Stadium Operations Platform</div>
         <div className="flex-1 flex justify-end items-center gap-4">
           <button className="flex items-center gap-1 hover:text-primary transition-colors"><MonitorSmartphone size={14} /> Device</button>
         </div>
@@ -48,14 +48,20 @@ export default function DashboardLayout() {
         <div className="absolute top-0 left-1/4 w-1/2 h-1 bg-gradient-to-r from-transparent via-primary to-transparent" />
         
         <div className="flex items-center gap-4 mb-4 sm:mb-0">
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 relative">
-            <div className="w-2 h-2 rounded-full bg-primary animate-ping absolute" />
-            <div className="w-3 h-3 rounded-full bg-primary" />
+          <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center border border-primary/50 relative shadow-[0_0_15px_rgba(34,197,94,0.3)]">
+            <div className="w-4 h-4 rounded-full bg-primary animate-ping absolute" />
+            <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center text-white text-[10px] font-bold">AI</div>
           </div>
           <div>
-            <div className="text-[10px] text-primary uppercase tracking-[0.2em] font-bold">Smart Arena Command</div>
-            <h1 className="text-2xl font-extrabold tracking-widest bg-gradient-to-r from-white via-primary to-info bg-clip-text text-transparent">ARENAOPS GENAI COMMAND</h1>
+            <div className="text-[10px] text-primary uppercase tracking-[0.2em] font-bold">AI Stadium Operations Copilot</div>
+            <h1 className="text-3xl font-extrabold tracking-widest bg-gradient-to-r from-white via-primary to-info bg-clip-text text-transparent">AegisFlow</h1>
           </div>
+        </div>
+
+        {/* Live AI Status Widget */}
+        <div className="hidden lg:flex items-center gap-2 px-4 py-1.5 bg-surface/50 border border-white/5 rounded-full shadow-inner animate-fade-in">
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+          <span className="text-xs font-semibold text-textSecondary tracking-wide">AI Monitoring Stadium</span>
         </div>
 
         <div className="flex items-center gap-6">

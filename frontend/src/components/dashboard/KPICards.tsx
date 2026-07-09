@@ -4,6 +4,16 @@ import { Card } from '../ui/Card';
 import SkeletonLoader from '../ui/SkeletonLoader';
 import { Users, AlertTriangle, BrainCircuit, ShieldHalf, Activity, Target, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useCountUp } from '../../hooks/useCountUp';
+
+function AnimatedNumber({ value, format }: { value: any, format: (v: any) => string }) {
+  // Only animate if value is a number
+  if (typeof value === 'number') {
+    const count = useCountUp(value, 1500);
+    return <>{format(count)}</>;
+  }
+  return <>{format(value)}</>;
+}
 
 const kpiConfig = [
   { key: 'crowdDensity', label: 'Crowd Density', icon: Users, format: (v: any) => `${v}%`, color: 'text-warning' },
@@ -64,7 +74,7 @@ export default function KPICards() {
                 <Icon size={16} className={config.color} />
               </div>
               <div className="text-2xl font-bold tracking-tight">
-                {config.format(value)}
+                <AnimatedNumber value={value} format={config.format} />
               </div>
             </Card>
           </motion.div>
