@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
-import { MessageCircle, Globe, Send, User, Bot, Volume2, VolumeX, Loader2 } from 'lucide-react';
+import { MessageCircle, Globe, Send, User, Bot, Mic, Loader2, Radio } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const languages = [
@@ -86,7 +86,7 @@ export default function BilingualConcierge() {
   ]);
   const [isTyping, setIsTyping] = useState(false);
   const [customInput, setCustomInput] = useState('');
-  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
+  const [isRecording, setIsRecording] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -113,7 +113,7 @@ export default function BilingualConcierge() {
   }, [lang]);
 
   const speakText = (text: string, langCode: string) => {
-    if (!isVoiceEnabled || !window.speechSynthesis) return;
+    if (!window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     const localeMap: Record<string, string> = {
@@ -132,7 +132,7 @@ export default function BilingualConcierge() {
       setIsTyping(false);
       const resText = simulatedResponses[preset.id][lang] || simulatedResponses[preset.id]['en'];
       setMessages(prev => [...prev, { role: 'assistant', content: resText }]);
-      speakText(resText, lang);
+      // No voice for chat interactions
     }, 1200);
   };
 
@@ -150,8 +150,36 @@ export default function BilingualConcierge() {
       const possibleAnswers = customSimulatedAnswers[lang] || customSimulatedAnswers['en'];
       const randomAnswer = possibleAnswers[Math.floor(Math.random() * possibleAnswers.length)];
       setMessages(prev => [...prev, { role: 'assistant', content: randomAnswer }]);
-      speakText(randomAnswer, lang);
+      // No voice for text chat
     }, 1500);
+  };
+
+  const handleVoiceInput = () => {
+    setIsRecording(true);
+    // Simulate recording for 2 seconds
+    setTimeout(() => {
+      setIsRecording(false);
+      // Mock transcribed voice query
+      const voiceQueries: Record<string, string> = {
+        en: 'Where can I find the team store?',
+        hi: 'मुझे टीम स्टोर कहाँ मिल सकता है?',
+        te: 'నేను టీమ్ స్టోర్‌ను ఎక్కడ కనుగొనగలను?',
+        ta: 'குழு கடையை நான் எங்கே காணலாம்?',
+        bn: 'আমি দলের দোকান কোথায় পেতে পারি?'
+      };
+      const userQuery = voiceQueries[lang] || voiceQueries['en'];
+      setMessages(prev => [...prev, { role: 'user', content: userQuery }]);
+      setIsTyping(true);
+      
+      setTimeout(() => {
+        setIsTyping(false);
+        // The 4th custom answer corresponds to the team store
+        const answer = (customSimulatedAnswers[lang] || customSimulatedAnswers['en'])[3];
+        setMessages(prev => [...prev, { role: 'assistant', content: answer }]);
+        // Voice to Voice: Speak the answer because input was voice
+        speakText(answer, lang);
+      }, 1500);
+    }, 2000);
   };
 
   return (
@@ -162,13 +190,7 @@ export default function BilingualConcierge() {
           <CardTitle className="text-sm font-bold uppercase tracking-wider">Fan Copilot</CardTitle>
         </div>
         <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setIsVoiceEnabled(!isVoiceEnabled)}
-            className={`p-1.5 rounded-full transition-colors ${isVoiceEnabled ? 'bg-primary/20 text-primary' : 'bg-surface text-textSecondary hover:text-textPrimary'}`}
-            title={isVoiceEnabled ? "Voice Output On" : "Voice Output Off"}
-          >
-            {isVoiceEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-          </button>
+
           <select 
             className="bg-surface/50 border border-borderWhite/20 rounded-md text-xs p-1 outline-none focus:ring-1 focus:ring-primary"
             value={lang}
@@ -212,6 +234,16 @@ export default function BilingualConcierge() {
                 </div>
               </motion.div>
             )}
+            {isRecording && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-3 flex-row-reverse">
+                <div className="w-8 h-8 rounded-full bg-error/20 text-error flex items-center justify-center shrink-0">
+                  <User size={14} />
+                </div>
+                <div className="p-3 rounded-lg bg-surfaceHighlight/50 text-error text-sm border border-error/20 rounded-tr-none flex items-center gap-2">
+                  <Radio size={14} className="animate-pulse" /> Listening...
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
           <div ref={messagesEndRef} />
         </div>
@@ -240,14 +272,25 @@ export default function BilingualConcierge() {
               className="w-full bg-surface border border-borderWhite/20 rounded-lg py-2.5 px-4 pr-12 text-sm focus:ring-2 focus:ring-primary outline-none transition-shadow"
               aria-label="Custom Copilot Query"
             />
-            <button 
-              type="submit"
-              className="absolute right-1.5 top-1/2 -translate-y-1/2 p-1.5 text-primary hover:bg-primary/10 rounded-md transition-colors disabled:opacity-50"
-              disabled={!customInput.trim() || isTyping}
-              aria-label="Send Query"
-            >
-              <Send className="w-4 h-4" />
-            </button>
+            <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              <button 
+                type="button"
+                onClick={handleVoiceInput}
+                className={`p-1.5 rounded-md transition-colors ${isRecording ? 'bg-error/20 text-error animate-pulse' : 'text-textSecondary hover:bg-surfaceHighlight hover:text-textPrimary'}`}
+                disabled={isTyping || isRecording}
+                aria-label="Voice Input"
+              >
+                <Mic className="w-4 h-4" />
+              </button>
+              <button 
+                type="submit"
+                className="p-1.5 text-primary hover:bg-primary/10 rounded-md transition-colors disabled:opacity-50"
+                disabled={!customInput.trim() || isTyping || isRecording}
+                aria-label="Send Query"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </form>
       </CardContent>
