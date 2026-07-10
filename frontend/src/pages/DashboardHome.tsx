@@ -7,6 +7,7 @@ const StadiumHeatmap = lazy(() => import('../components/dashboard/StadiumHeatmap
 const IncidentTimeline = lazy(() => import('../components/dashboard/IncidentTimeline'));
 const SystemHealth = lazy(() => import('../components/dashboard/SystemHealth'));
 const CopilotPanel = lazy(() => import('../components/copilot/CopilotPanel'));
+const RecentActivityPanel = lazy(() => import('../components/dashboard/RecentActivityPanel'));
 
 // Fallbacks for suspense
 const HeatmapFallback = () => <SkeletonLoader className="h-[400px] w-full col-span-1 lg:col-span-2" />;
@@ -44,6 +45,10 @@ export default function DashboardHome() {
             <IncidentTimeline />
           </Suspense>
           
+          <Suspense fallback={<TimelineFallback />}>
+            <RecentActivityPanel />
+          </Suspense>
+
           <Suspense fallback={<HealthFallback />}>
             <SystemHealth />
           </Suspense>

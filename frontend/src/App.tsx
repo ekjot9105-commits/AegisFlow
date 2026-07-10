@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import RootLayout from './layouts/RootLayout';
 import DashboardLayout from './layouts/DashboardLayout';
 import DashboardHome from './pages/DashboardHome';
+import LandingPage from './pages/LandingPage';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import { ToastProvider } from './hooks/ToastContext';
 
@@ -54,27 +56,14 @@ function App() {
       <ToastProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<DashboardLayout />}>
-              <Route index element={<Navigate to="/dashboard" replace />} />
-              {/* RBAC Protected Operations Routes */}
-              <Route path="dashboard" element={
-                <ProtectedRoute allowedRoles={['admin', 'operator']}>
-                  <DashboardHome />
-                </ProtectedRoute>
-              } />
-              <Route path="analytics" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <SuspenseWrapper><Analytics /></SuspenseWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="logs" element={
-                <ProtectedRoute allowedRoles={['admin']}>
-                  <SuspenseWrapper><SystemLogs /></SuspenseWrapper>
-                </ProtectedRoute>
-              } />
-              <Route path="ai-activity" element={
-                <ProtectedRoute allowedRoles={['admin', 'operator']}>
-                  <SuspenseWrapper><AIActivityLog /></SuspenseWrapper>
+            <Route path="/" element={<RootLayout />}>
+              <Route index element={<LandingPage />} />
+              
+              {/* Public/Other Roles (No Dashboard Sidebar/Tabs) */}
+              <Route path="fan-portal" element={<SuspenseWrapper><FanPortal /></SuspenseWrapper>} />
+              <Route path="volunteers" element={
+                <ProtectedRoute allowedRoles={['admin', 'volunteer']}>
+                  <SuspenseWrapper><VolunteerDashboard /></SuspenseWrapper>
                 </ProtectedRoute>
               } />
               <Route path="settings" element={
@@ -83,13 +72,29 @@ function App() {
                 </ProtectedRoute>
               } />
 
-              {/* Public/Other Roles */}
-              <Route path="fan-portal" element={<SuspenseWrapper><FanPortal /></SuspenseWrapper>} />
-              <Route path="volunteers" element={
-                <ProtectedRoute allowedRoles={['admin', 'volunteer']}>
-                  <SuspenseWrapper><VolunteerDashboard /></SuspenseWrapper>
-                </ProtectedRoute>
-              } />
+              {/* RBAC Protected Operations Routes (With Ops Tabs) */}
+              <Route element={<DashboardLayout />}>
+                <Route path="dashboard" element={
+                  <ProtectedRoute allowedRoles={['admin', 'operator']}>
+                    <DashboardHome />
+                  </ProtectedRoute>
+                } />
+                <Route path="analytics" element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <SuspenseWrapper><Analytics /></SuspenseWrapper>
+                  </ProtectedRoute>
+                } />
+                <Route path="logs" element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <SuspenseWrapper><SystemLogs /></SuspenseWrapper>
+                  </ProtectedRoute>
+                } />
+                <Route path="ai-activity" element={
+                  <ProtectedRoute allowedRoles={['admin', 'operator']}>
+                    <SuspenseWrapper><AIActivityLog /></SuspenseWrapper>
+                  </ProtectedRoute>
+                } />
+              </Route>
             </Route>
           </Routes>
         </BrowserRouter>

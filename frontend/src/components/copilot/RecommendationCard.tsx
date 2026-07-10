@@ -22,9 +22,12 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
   const isRejected = status === 'rejected';
 
   return (
-    <div className="glass-card flex flex-col h-full border border-primary/20 bg-gradient-to-br from-surface to-surfaceHighlight/30 overflow-hidden">
+    <div className="glass-card flex flex-col h-full border border-primary/40 shadow-[0_0_30px_rgba(34,197,94,0.15)] bg-gradient-to-br from-surface to-surfaceHighlight/30 overflow-hidden relative group">
+      {/* Dynamic Animated Glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-info/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none z-0" />
+      
       {/* Header section */}
-      <div className="p-6 border-b border-borderWhite/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface/50">
+      <div className="relative z-10 p-6 border-b border-primary/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface/80 backdrop-blur-md">
         <div>
           <div className="flex items-center gap-3 mb-2">
             <h2 className="text-xl font-bold tracking-tight text-white">{data.incident_id}</h2>
@@ -35,7 +38,7 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
         <ConfidenceMeter confidence={data.confidence} />
       </div>
 
-      <div className="p-6 flex-1 overflow-y-auto space-y-8">
+      <div className="relative z-10 p-6 flex-1 overflow-y-auto space-y-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Left Column */}
           <div className="space-y-6">
@@ -54,7 +57,7 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
           <div className="space-y-6">
             <div>
               <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Recommended Actions</h4>
-              <ul className="list-decimal list-inside space-y-2 bg-primary/5 p-4 rounded-lg border border-primary/10 text-sm">
+              <ul className="list-decimal list-inside space-y-2 bg-primary/10 p-4 rounded-lg border border-primary/30 text-sm shadow-inner">
                 {data.recommended_actions.map((action: string, i: number) => (
                   <li key={i} className="text-textPrimary leading-snug">{action}</li>
                 ))}
@@ -82,7 +85,7 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
       </div>
 
       {/* Footer / Actions */}
-      <div className="p-6 border-t border-borderWhite/20 bg-surface/50 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="relative z-10 p-6 border-t border-primary/20 bg-surface/80 backdrop-blur-md flex flex-col sm:flex-row justify-between items-center gap-4">
         <div className="flex items-center gap-2">
           {isExecuting && <Loader2 className="w-5 h-5 text-primary animate-spin" />}
           {isCompleted && <Check className="w-5 h-5 text-accent" />}

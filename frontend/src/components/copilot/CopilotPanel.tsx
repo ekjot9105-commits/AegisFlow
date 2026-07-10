@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { fetchRecommendations, executeRecommendation } from '../../services/copilot';
 import RecommendationCard from './RecommendationCard';
-import Button from '../ui/Button';
+import AILoadingState from '../ui/AILoadingState';
+import EmptyState from '../ui/EmptyState';
 import { motion } from 'framer-motion';
-import { AlertTriangle, RefreshCw, WifiOff, Loader2 } from 'lucide-react';
+import { AlertTriangle, RefreshCw, WifiOff } from 'lucide-react';
 import { useToast } from '../../hooks/ToastContext';
 
 export default function CopilotPanel() {
@@ -52,19 +53,7 @@ export default function CopilotPanel() {
 
   // Loading state
   if (isLoading) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full min-h-[400px] glass-card" aria-busy="true" aria-live="polite">
-        <Loader2 className="w-12 h-12 text-primary animate-spin mb-6" />
-        <div className="space-y-3 text-center w-full max-w-sm">
-          <p className="text-sm font-medium text-white">AI Operations Copilot</p>
-          <div className="space-y-2">
-            <p className="text-xs text-textSecondary animate-pulse">Connecting to AI Operations Backend...</p>
-            <p className="text-[10px] text-textSecondary/60">Analyzing live stadium telemetry...</p>
-            <p className="text-[10px] text-textSecondary/60">Evaluating historical incidents...</p>
-          </div>
-        </div>
-      </div>
-    );
+    return <AILoadingState message="Initializing Copilot Core..." />;
   }
 
   // Error state
@@ -74,9 +63,9 @@ export default function CopilotPanel() {
         <AlertTriangle className="w-12 h-12 text-danger mb-4" />
         <h3 className="text-lg font-semibold text-white">Analysis Failed</h3>
         <p className="text-sm text-textSecondary mt-2 mb-6">{(error as Error).message}</p>
-        <Button onClick={() => refetch()} variant="secondary">
+        <button onClick={() => refetch()} className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-sm text-white flex items-center transition-colors">
           <RefreshCw className="w-4 h-4 mr-2" /> Retry Analysis
-        </Button>
+        </button>
       </div>
     );
   }
@@ -84,15 +73,12 @@ export default function CopilotPanel() {
   // Empty state
   if (!data) {
     return (
-      <div className="flex flex-col items-center justify-center h-full min-h-[400px] glass-card">
-        <div className="w-16 h-16 rounded-full bg-primary/10 mb-6 flex items-center justify-center border border-primary/20 relative">
-          <span className="w-full h-full rounded-full absolute bg-primary/5 animate-ping"></span>
-          <span className="text-2xl">✨</span>
-        </div>
-        <h3 className="text-lg font-bold text-white mb-2">No active incidents detected.</h3>
-        <p className="text-sm text-textSecondary text-center max-w-sm leading-relaxed">
-          Stadium operations are running normally.<br/>AI continues monitoring all sectors.
-        </p>
+      <div className="glass-card flex items-center justify-center min-h-[400px]">
+        <EmptyState 
+          icon={<div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center border border-primary/20 relative"><span className="w-full h-full rounded-full absolute bg-primary/5 animate-ping"></span><span className="text-2xl">✨</span></div>}
+          title="No Active Incidents"
+          description="Stadium operations are running normally. AI continues monitoring all sectors."
+        />
       </div>
     );
   }

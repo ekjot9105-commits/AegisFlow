@@ -3,6 +3,7 @@ import { fetchTimeline } from '../../services/dashboard';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 import Badge from '../ui/Badge';
 import SkeletonLoader from '../ui/SkeletonLoader';
+import EmptyState from '../ui/EmptyState';
 import { Train, Activity, BrainCircuit, CheckCircle, Megaphone, ChevronDown, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
@@ -49,11 +50,10 @@ export default function IncidentTimeline() {
       </CardHeader>
       <CardContent className="flex-1 overflow-y-auto pr-2 pb-4">
         {(!data || data.length === 0) ? (
-          <div className="flex flex-col items-center justify-center h-full text-center text-textSecondary px-4 py-8">
-            <CheckCircle className="w-12 h-12 text-primary/30 mb-4" />
-            <p className="text-sm font-medium text-white mb-1">Stadium operations are running normally.</p>
-            <p className="text-xs max-w-[200px]">AI continues monitoring all sectors for anomalies.</p>
-          </div>
+          <EmptyState 
+            title="No Incidents Logged" 
+            description="Stadium operations are running normally. AI continues monitoring all sectors for anomalies." 
+          />
         ) : (
           <div 
             className="relative border-l border-white/10 ml-3 space-y-6 mt-4" 
