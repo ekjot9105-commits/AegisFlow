@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 class IncidentService:
     def __init__(self):
         # Instantiate dependencies. In a stricter DI setup, these would be injected.
-        self.ai_service = get_ai_service(use_mock=True)
+        self.ai_service = get_ai_service(use_mock=None)
         self.agent = OperationsCopilotAgent(ai_service=self.ai_service)
         self.cache = semantic_cache
         

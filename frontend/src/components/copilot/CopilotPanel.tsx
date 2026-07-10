@@ -4,12 +4,14 @@ import { fetchRecommendations, executeRecommendation } from '../../services/copi
 import RecommendationCard from './RecommendationCard';
 import AILoadingState from '../ui/AILoadingState';
 import EmptyState from '../ui/EmptyState';
-import { motion } from 'framer-motion';
-import { AlertTriangle, RefreshCw, WifiOff } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { AlertTriangle, RefreshCw, WifiOff, MessageSquare, Activity } from 'lucide-react';
 import { useToast } from '../../hooks/ToastContext';
+import OperatorChat from './OperatorChat';
 
 export default function CopilotPanel() {
   const [executionStatus, setExecutionStatus] = useState<'pending' | 'executing' | 'completed' | 'rejected'>('pending');
+  const [activeTab, setActiveTab] = useState<'incidents' | 'chat'>('incidents');
   const { addToast } = useToast();
 
   const { data, isLoading, isError, error, refetch, isPaused } = useQuery({
@@ -84,18 +86,54 @@ export default function CopilotPanel() {
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="w-full h-full"
-    >
-      <RecommendationCard 
-        data={data}
-        status={executionStatus}
-        onApprove={() => mutation.mutate('approve')}
-        onReject={() => mutation.mutate('reject')}
-        onModify={() => mutation.mutate('modify')}
-      />
-    </motion.div>
+    <div className="w-full h-full flex flex-col gap-4">
+      {/* Tab Navigation */}
+      <div className="flex bg-surfaceHighlight/50 p-1 rounded-lg border border-borderWhite/10 w-fit">
+        <button 
+          onClick={() => setActiveTab('incidents')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all ${activeTab === 'incidents' ? 'bg-primary text-bg-base shadow' : 'text-textSecondary hover:text-textPrimary'}`}
+        >
+          <Activity size={16} /> Active Incidents
+        </button>
+        <button 
+          onClick={() => setActiveTab('chat')}
+          className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-semibold transition-all ${activeTab === 'chat' ? 'bg-accent text-bg-base shadow' : 'text-textSecondary hover:text-textPrimary'}`}
+        >
+          <MessageSquare size={16} /> Operator Copilot
+        </button>
+      </div>
+
+      <div className="flex-1 min-h-0">
+        <AnimatePresence mode="wait">
+          {activeTab === 'incidents' ? (
+            <motion.div 
+              key="incidents"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              className="w-full h-full"
+            >
+              <RecommendationCard 
+                data={data}
+                status={executionStatus}
+                onApprove={() => mutation.mutate('approve')}
+                onReject={() => mutation.mutate('reject')}
+                onModify={() => mutation.mutate('modify')}
+              />
+            </motion.div>
+          ) : (
+            <motion.div 
+              key="chat"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="w-full h-full"
+            >
+              <OperatorChat />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
   );
 }

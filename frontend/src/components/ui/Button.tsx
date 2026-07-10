@@ -20,7 +20,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       primary: 'bg-primary hover:bg-primaryHover text-white shadow-lg shadow-primary/20',
       secondary: 'bg-surfaceHighlight hover:bg-surfaceHighlight/80 text-textPrimary',
       danger: 'bg-danger/90 hover:bg-danger text-white shadow-lg shadow-danger/20',
-      ghost: 'hover:bg-surfaceHighlight/50 text-textSecondary hover:text-textPrimary',
+      ghost: 'hover:bg-surfaceHighlight/50 text-textPrimary/80 hover:text-textPrimary',
     };
 
     const sizes = {
@@ -35,7 +35,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         disabled={isLoading || disabled}
         className={cn(
           'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200',
-          'disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98]',
+          'disabled:opacity-70 disabled:cursor-not-allowed active:scale-[0.98]',
           variants[variant],
           sizes[size],
           className

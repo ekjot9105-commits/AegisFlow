@@ -3,6 +3,7 @@ from sse_starlette.sse import EventSourceResponse
 import asyncio
 import json
 import random
+from functools import lru_cache
 
 router = APIRouter(prefix="/api/v1/dashboard", tags=["Dashboard"])
 
@@ -28,3 +29,36 @@ async def heatmap_stream():
             await asyncio.sleep(3) # Send update every 3 seconds
 
     return EventSourceResponse(event_generator())
+
+@router.get("/predict")
+@lru_cache(maxsize=16)
+def _get_predictions_cached(horizon: int):
+    # Synchronous cacheable logic
+    multiplier = 1 + (horizon * 0.05)
+    
+    predictions = [
+        {"id": "N1", "name": "North Gate 1", "predicted_density": min(100, int(50 * multiplier)), "predicted_queue_time": int(3 * multiplier), "risk_trend": "stable"},
+        {"id": "N2", "name": "North Gate 2", "predicted_density": min(100, int(85 * multiplier)), "predicted_queue_time": int(12 * (1 + horizon * 0.1)), "risk_trend": "increasing"},
+        {"id": "E1", "name": "East Plaza", "predicted_density": min(100, int(65 * multiplier)), "predicted_queue_time": int(6 * multiplier), "risk_trend": "stable"},
+        {"id": "S1", "name": "South VIP", "predicted_density": max(0, int(30 - horizon)), "predicted_queue_time": 1, "risk_trend": "decreasing"},
+        {"id": "W1", "name": "West Gate 4", "predicted_density": min(100, int(95 + (horizon * 0.5))), "predicted_queue_time": int(25 * (1 + horizon * 0.15)), "risk_trend": "critical"},
+    ]
+    return predictions
+
+@router.get("/predict")
+async def get_predictions(horizon: int = 5):
+    """
+    Returns predicted crowd density and queue lengths for a future time horizon (in minutes).
+    Mocking AI predictive intelligence output.
+    Uses lru_cache for performance optimization on identical horizons.
+    """
+    if horizon not in [5, 10, 15]:
+        horizon = 5
+        
+    predictions = _get_predictions_cached(horizon)
+    
+    return {
+        "success": True,
+        "message": f"Predictions generated for t+{horizon}m",
+        "data": predictions
+    }

@@ -57,30 +57,58 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
           <div className="space-y-6">
             <div>
               <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Recommended Actions</h4>
-              <ul className="list-decimal list-inside space-y-2 bg-primary/10 p-4 rounded-lg border border-primary/30 text-sm shadow-inner">
-                {data.recommended_actions.map((action: string, i: number) => (
-                  <li key={i} className="text-textPrimary leading-snug">{action}</li>
+              <div className="space-y-3">
+                {data.recommended_actions.map((action: any, i: number) => (
+                  <div key={i} className="bg-primary/10 p-4 rounded-lg border border-primary/30 shadow-inner">
+                    <div className="flex justify-between items-start mb-2">
+                      <span className="font-semibold text-textPrimary">{action.action_id} - {action.assigned_role}</span>
+                      <span className="text-xs px-2 py-1 bg-primary/20 text-primary rounded capitalize">{action.priority}</span>
+                    </div>
+                    <p className="text-sm text-textPrimary leading-snug mb-2">{action.description}</p>
+                    <p className="text-xs text-textSecondary"><span className="font-semibold">Impact:</span> {action.expected_impact}</p>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
+
+            {data.alternative_actions && data.alternative_actions.length > 0 && (
+              <div>
+                <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Alternative Actions</h4>
+                <div className="space-y-3 opacity-80">
+                  {data.alternative_actions.map((action: any, i: number) => (
+                    <div key={i} className="bg-surface p-4 rounded-lg border border-borderWhite/20 border-dashed">
+                       <p className="text-sm text-textPrimary leading-snug mb-2">{action.description}</p>
+                       <p className="text-xs text-textSecondary"><span className="font-semibold">Impact:</span> {action.expected_impact}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
             
             <div>
-              <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Expected Impact</h4>
-              <p className="text-sm text-accent bg-accent/10 p-3 rounded-lg border border-accent/20 leading-relaxed mb-4">
-                {data.expected_impact}
-              </p>
-              
-              <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Estimated Congestion Reduction</h4>
+              <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Estimated Crowd Reduction</h4>
               <p className="text-sm text-info bg-info/10 p-3 rounded-lg border border-info/20 leading-relaxed font-medium">
-                {data.estimated_congestion_reduction || "N/A"}
+                {data.estimated_crowd_reduction ? `${data.estimated_crowd_reduction}%` : "N/A"}
               </p>
             </div>
           </div>
         </div>
 
+        <div className="border-t border-borderWhite/20 pt-8 pb-4">
+            <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-4">AI Reasoning Chain</h4>
+            <div className="space-y-3 pl-2 border-l-2 border-primary/30">
+               {data.reasoning_chain?.map((step: string, i: number) => (
+                 <div key={i} className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] text-primary shrink-0 mt-0.5">{i+1}</div>
+                    <p className="text-sm text-textSecondary">{step}</p>
+                 </div>
+               ))}
+            </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 border-t border-borderWhite/20 pt-8">
           <VolunteerTasks tasks={data.volunteer_tasks} />
-          <AnnouncementPanel announcements={data.announcements} />
+          <AnnouncementPanel announcements={data.multilingual_announcement} />
         </div>
       </div>
 

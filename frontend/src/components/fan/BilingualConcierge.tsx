@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
-import { Volume2, Globe, Sparkles, Send } from 'lucide-react';
+import { MessageCircle, Globe, Sparkles, Send } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const languages = [
@@ -81,29 +81,18 @@ export default function BilingualConcierge() {
   const [isTyping, setIsTyping] = useState(false);
   const [customInput, setCustomInput] = useState('');
   
-  const speakText = (text: string, langCode: string) => {
-    if (!window.speechSynthesis) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    // Simple mapping to browser locales
-    const localeMap: Record<string, string> = {
-      en: 'en-US', hi: 'hi-IN', te: 'te-IN', ta: 'ta-IN', bn: 'bn-IN'
-    };
-    utterance.lang = localeMap[langCode] || 'en-US';
-    window.speechSynthesis.speak(utterance);
-  };
+
 
   const handlePresetClick = (id: string) => {
     setActiveQuery(id);
     setResponse(null);
     setIsTyping(true);
     
-    // Simulate AI thinking and voice synthesis
+    // Simulate AI thinking
     setTimeout(() => {
       setIsTyping(false);
       const resText = simulatedResponses[id][lang] || simulatedResponses[id]['en'];
       setResponse(resText);
-      speakText(resText, lang);
     }, 1200);
   };
 
@@ -120,7 +109,6 @@ export default function BilingualConcierge() {
       const possibleAnswers = customSimulatedAnswers[lang] || customSimulatedAnswers['en'];
       const randomAnswer = possibleAnswers[Math.floor(Math.random() * possibleAnswers.length)];
       setResponse(randomAnswer);
-      speakText(randomAnswer, lang);
       setCustomInput('');
     }, 1500);
   };
@@ -146,7 +134,7 @@ export default function BilingualConcierge() {
       
       <CardContent className="flex-1 flex flex-col gap-4">
         <div className="text-xs text-textSecondary uppercase tracking-wide">
-          Bilingual Voice Assistant Simulator
+          Bilingual Chat Assistant Simulator
         </div>
         
         <div className="flex-1 flex flex-col gap-3">
@@ -161,7 +149,7 @@ export default function BilingualConcierge() {
                 <span className="text-sm font-medium">{preset.en}</span>
                 {lang !== 'en' && <span className="text-xs text-textSecondary mt-1">{(preset as any)[lang]}</span>}
               </div>
-              <Volume2 className={`w-4 h-4 transition-colors ${activeQuery === preset.id ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`} />
+              <MessageCircle className={`w-4 h-4 transition-colors ${activeQuery === preset.id ? 'text-primary' : 'text-textSecondary group-hover:text-primary'}`} />
             </button>
           ))}
         </div>

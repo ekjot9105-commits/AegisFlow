@@ -16,10 +16,18 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.responses import Response
 
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
 from backend.api.middleware.sanitizer import PIISanitizerMiddleware
 from backend.db.schemas import APIResponse
-from backend.api.routers import copilot, dashboard
+from backend.api.routers import copilot, dashboard, chat
 import jwt
+import os
+
+# Configure slowapi for rate limiting
+limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
 
 # Configure structured logging
 logging.basicConfig(
@@ -51,24 +59,25 @@ class MockAuthMiddleware(BaseHTTPMiddleware):
             
             token = auth.split("Bearer ")[1]
             try:
-                # Security: Enforce rigorous cryptographic validation
-                # In production, use standard RS256/HS256 with actual secrets
-                payload = jwt.decode(token, "mock_secret", algorithms=["HS256"])
+                # Use PyJWT with an environment secret (falling back to a default for demo only)
+                secret = os.getenv("JWT_SECRET", "super_secure_fifa_secret_2026")
+                payload = jwt.decode(token, secret, algorithms=["HS256"])
                 request.state.user = payload
-            except Exception as e:
-                # Mock fallback for dev/demo purposes if jwt package fails or token is just a dummy
+            except jwt.ExpiredSignatureError:
+                return JSONResponse(
+                    status_code=401, 
+                    content=APIResponse(success=False, message="Unauthorized - Token Expired", data=None).model_dump()
+                )
+            except jwt.InvalidTokenError:
+                # Mock fallback for development if token is literally 'mock_dev_token_123'
                 if token != "mock_dev_token_123":
                     return JSONResponse(
                         status_code=401, 
-                        content=APIResponse(success=False, message="Unauthorized - Invalid Signature", data=None).model_dump()
+                        content=APIResponse(success=False, message="Unauthorized - Invalid Token", data=None).model_dump()
                     )
         return await call_next(request)
 
-class RateLimiterMiddleware(BaseHTTPMiddleware):
-    """Basic rate limiting mock."""
-    async def dispatch(self, request: Request, call_next):
-        # Real implementation would use Redis and sliding windows
-        return await call_next(request)
+
 
 def create_app() -> FastAPI:
     """Factory function to create and configure the FastAPI application."""
@@ -80,6 +89,9 @@ def create_app() -> FastAPI:
         redoc_url="/redoc"
     )
 
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
     # Add CORS Middleware (restrict origins in production)
     app.add_middleware(
         CORSMiddleware,
@@ -90,7 +102,6 @@ def create_app() -> FastAPI:
     )
 
     # Add Custom Middlewares
-    app.add_middleware(RateLimiterMiddleware)
     app.add_middleware(MockAuthMiddleware)
     app.add_middleware(PIISanitizerMiddleware)
     app.add_middleware(SecurityHeadersMiddleware)
@@ -99,6 +110,7 @@ def create_app() -> FastAPI:
     # Register API Routers
     app.include_router(copilot.router)
     app.include_router(dashboard.router)
+    app.include_router(chat.router)
 
     # Register Global Exception Handlers
     @app.exception_handler(StarletteHTTPException)

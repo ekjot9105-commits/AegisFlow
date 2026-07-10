@@ -5,6 +5,7 @@ import SkeletonLoader from '../ui/SkeletonLoader';
 import { Users, AlertTriangle, BrainCircuit, ShieldHalf, Activity, Target, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCountUp } from '../../hooks/useCountUp';
+import { useWebSocket } from '../../services/websocket';
 
 function AnimatedNumber({ value, format }: { value: any, format: (v: any) => string }) {
   const numericValue = typeof value === 'number' ? value : 0;
@@ -27,11 +28,18 @@ const kpiConfig = [
 ];
 
 export default function KPICards() {
-  const { data, isLoading } = useQuery({
+  const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/api/v1/ws/kpi';
+  const { data: wsData, status: wsStatus } = useWebSocket<any>(wsUrl);
+
+  const isWsConnected = wsStatus === 'connected';
+
+  const { data: queryData, isLoading } = useQuery({
     queryKey: ['kpiData'],
     queryFn: fetchKPIData,
-    refetchInterval: 10000
+    refetchInterval: isWsConnected ? false : 10000
   });
+
+  const data = isWsConnected && wsData ? wsData : queryData;
 
   const container = {
     hidden: { opacity: 0 },

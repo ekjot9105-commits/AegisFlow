@@ -53,47 +53,75 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
   const [hoveredSector, setHoveredSector] = useState<any>(null);
   const [showHeatmap, setShowHeatmap] = useState(true);
 
-  // Fallback function if SSE fails
-  const fetchMockData = async () => {
+  const [predictionHorizon, setPredictionHorizon] = useState(0);
+
+  // Fallback function if SSE fails or if prediction horizon is set
+  const fetchMockData = async (horizon: number = 0) => {
     try {
-      const mockData = await fetchHeatmapData();
-      setData(mockData);
+      if (horizon > 0) {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        const res = await fetch(`${apiUrl}/api/v1/dashboard/predict?horizon=${horizon}`);
+        const json = await res.json();
+        // map prediction data back into the expected heatmap structure
+        const predictionData = json.data.map((p: any) => ({
+            id: p.id,
+            name: p.name,
+            density: p.predicted_density,
+            risk: p.risk_trend === 'critical' ? 'critical' : p.risk_trend === 'increasing' ? 'high' : p.risk_trend === 'decreasing' ? 'low' : 'medium',
+            prediction: `t+${horizon}m AI Prediction`,
+            queue_time: `${p.predicted_queue_time} mins`,
+            recommendation: 'Predicted State',
+            confidence: 85,
+            expected_crowd: '--'
+        }));
+        setData(predictionData);
+      } else {
+        const mockData = await fetchHeatmapData();
+        setData(mockData);
+      }
+    } catch (e) {
+      console.error('Failed to fetch data', e);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    // Attempt Server-Sent Events (SSE) connection for extreme efficiency
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-    const eventSource = new EventSource(`${apiUrl}/api/v1/dashboard/heatmap/stream`);
-    
-    eventSource.onmessage = (event) => {
-      try {
-        const parsed = JSON.parse(event.data);
-        setData(parsed);
-        setIsLoading(false);
-      } catch (err) {
-        console.error("SSE parse error", err);
-      }
-    };
+    let eventSource: EventSource | null = null;
+    let interval: any = null;
 
-    eventSource.onerror = () => {
-      // If backend SSE is down (e.g., local dev without backend running), fallback to mock polling
-      console.warn("SSE connection failed, falling back to mock polling.");
-      eventSource.close();
-      fetchMockData();
-      // Setup mock polling interval
-      const interval = setInterval(fetchMockData, 5000);
-      // Hack to attach cleanup
-      (eventSource as any)._fallbackInterval = interval;
-    };
+    if (predictionHorizon === 0) {
+        // Attempt Server-Sent Events (SSE) connection for extreme efficiency for live data
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+        eventSource = new EventSource(`${apiUrl}/api/v1/dashboard/heatmap/stream`);
+        
+        eventSource.onmessage = (event) => {
+          try {
+            const parsed = JSON.parse(event.data);
+            setData(parsed);
+            setIsLoading(false);
+          } catch (err) {
+            console.error("SSE parse error", err);
+          }
+        };
+
+        eventSource.onerror = () => {
+          // If backend SSE is down, fallback to mock polling
+          console.warn("SSE connection failed, falling back to mock polling.");
+          eventSource?.close();
+          fetchMockData(0);
+          interval = setInterval(() => fetchMockData(0), 5000);
+        };
+    } else {
+        // Fetch predictive data
+        fetchMockData(predictionHorizon);
+    }
 
     return () => {
-      eventSource.close();
-      if ((eventSource as any)._fallbackInterval) clearInterval((eventSource as any)._fallbackInterval);
+      if (eventSource) eventSource.close();
+      if (interval) clearInterval(interval);
     };
-  }, []);
+  }, [predictionHorizon]);
 
   if (isLoading) {
     return <SkeletonLoader className="h-96 w-full" />;
@@ -141,9 +169,30 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
           </CardTitle>
           {subtitle && <h2 className="text-xl font-bold text-textPrimary tracking-wide">{subtitle}</h2>}
         </div>
-        <div className="flex items-center gap-2">
-          <input type="checkbox" id="showHeatmap" className="accent-primary" checked={showHeatmap} onChange={(e) => setShowHeatmap(e.target.checked)} />
-          <label htmlFor="showHeatmap" className="text-sm font-medium text-textSecondary cursor-pointer">Show Crowd Heatmap</label>
+        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-4 z-10">
+          {/* Time Slider */}
+          <div className="flex items-center gap-3 bg-surface/80 p-2 rounded-lg border border-borderWhite/10 shadow-sm backdrop-blur">
+            <span className="text-xs font-semibold text-textSecondary uppercase tracking-wider">Time</span>
+            <div className="flex gap-1">
+              {[0, 5, 10, 15].map(time => (
+                <button
+                  key={time}
+                  onClick={() => setPredictionHorizon(time)}
+                  className={`px-3 py-1 rounded text-xs font-bold transition-colors ${
+                    predictionHorizon === time 
+                      ? 'bg-primary text-bg-base' 
+                      : 'bg-primary/10 text-primary hover:bg-primary/20'
+                  }`}
+                >
+                  {time === 0 ? 'LIVE' : `+${time}m`}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="showHeatmap" className="accent-primary" checked={showHeatmap} onChange={(e) => setShowHeatmap(e.target.checked)} />
+            <label htmlFor="showHeatmap" className="text-sm font-medium text-textSecondary cursor-pointer">Heatmap</label>
+          </div>
         </div>
       </CardHeader>
       

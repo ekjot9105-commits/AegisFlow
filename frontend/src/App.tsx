@@ -8,6 +8,8 @@ import DashboardHome from './pages/DashboardHome';
 import LandingPage from './pages/LandingPage';
 import LoadingSpinner from './components/ui/LoadingSpinner';
 import { ToastProvider } from './hooks/ToastContext';
+import { AuthProvider } from './hooks/AuthContext';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 const VolunteerDashboard = lazy(() => import('./pages/VolunteerDashboard'));
 const Analytics = lazy(() => import('./pages/Analytics'));
@@ -33,27 +35,11 @@ function SuspenseWrapper({ children }: { children: ReactNode }) {
   );
 }
 
-// Mock Role-Based Access Control (RBAC)
-function ProtectedRoute({ children, allowedRoles }: { children: ReactNode, allowedRoles: string[] }) {
-  // In a real app, use Zustand/Context to get the current user's role from their JWT
-  const mockUserRole = 'admin'; // Change to 'fan' to test rejection
-  
-  if (!allowedRoles.includes(mockUserRole)) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen bg-surface text-textPrimary">
-        <h1 className="text-4xl font-bold text-danger mb-4">403 - Forbidden</h1>
-        <p className="text-textSecondary">Your role ({mockUserRole}) does not have clearance for this dashboard.</p>
-        <button onClick={() => window.location.href = '/fan-portal'} className="mt-6 px-4 py-2 bg-primary rounded">Return to Fan Portal</button>
-      </div>
-    );
-  }
-  return <>{children}</>;
-}
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ToastProvider>
+      <AuthProvider>
+        <ToastProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<RootLayout />}>
@@ -98,7 +84,8 @@ function App() {
             </Route>
           </Routes>
         </BrowserRouter>
-      </ToastProvider>
+        </ToastProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

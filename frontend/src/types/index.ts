@@ -16,9 +16,11 @@ export interface CopilotRecommendation {
   root_cause: string;
   evidence: string[];
   reasoning: string;
-  recommended_actions: string[];
-  expected_impact: string;
-  estimated_congestion_reduction: string;
+  reasoning_chain: string[];
+  recommended_actions: any[];
+  alternative_actions: any[];
+  expected_impact?: string;
+  estimated_crowd_reduction?: number;
   volunteer_tasks: VolunteerTask[];
-  announcements: Announcement[];
+  multilingual_announcement: any;
 }
