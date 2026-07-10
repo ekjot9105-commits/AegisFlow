@@ -5,7 +5,7 @@ export default function RiskBadge({ score }: { score: number }) {
     if (score >= 80) return { label: 'CRITICAL', color: 'bg-danger/20 text-danger border-danger/50' };
     if (score >= 60) return { label: 'HIGH', color: 'bg-warning/20 text-warning border-warning/50' };
     if (score >= 40) return { label: 'MEDIUM', color: 'bg-primary/20 text-primary border-primary/50' };
-    return { label: 'LOW', color: 'bg-surfaceHighlight/50 text-textSecondary border-white/10' };
+    return { label: 'LOW', color: 'bg-surfaceHighlight/50 text-textSecondary border-borderWhite/20' };
   };
 
   const { label, color } = getRiskProps();

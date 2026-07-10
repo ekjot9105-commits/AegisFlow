@@ -70,11 +70,11 @@ export default function VolunteerDashboard() {
           </CardHeader>
           <CardContent>
             {/* Visual map of active volunteers */}
-            <div className="w-full h-64 bg-surfaceHighlight/20 rounded-lg flex items-center justify-center border border-white/5 relative overflow-hidden" aria-label="Volunteer location map">
+            <div className="w-full h-64 bg-surfaceHighlight/20 rounded-lg flex items-center justify-center border border-borderWhite/20 relative overflow-hidden" aria-label="Volunteer location map">
               {/* Stadium outline */}
               <svg viewBox="0 0 100 100" className="w-full h-full opacity-30 absolute inset-0">
-                <circle cx="50" cy="50" r="40" stroke="#fff" strokeWidth="0.5" fill="none" />
-                <rect x="35" y="30" width="30" height="40" stroke="#fff" strokeWidth="0.5" fill="none" rx="2" />
+                <circle cx="50" cy="50" r="40" stroke="currentColor" className="text-textPrimary" strokeWidth="0.5" fill="none" />
+                <rect x="35" y="30" width="30" height="40" stroke="currentColor" className="text-textPrimary" strokeWidth="0.5" fill="none" rx="2" />
               </svg>
               
               {/* Volunteer Nodes */}
@@ -86,9 +86,9 @@ export default function VolunteerDashboard() {
                   <div key={task.id} className="absolute flex flex-col items-center group" style={{ top, left }}>
                     <span className="relative flex h-4 w-4">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-info opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-4 w-4 bg-info border-2 border-white"></span>
+                      <span className="relative inline-flex rounded-full h-4 w-4 bg-info border-2 border-surface"></span>
                     </span>
-                    <span className="mt-1 text-[10px] bg-surface/80 px-1.5 py-0.5 rounded font-bold text-white shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                    <span className="mt-1 text-[10px] bg-surface/90 px-1.5 py-0.5 rounded font-bold text-textPrimary shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
                       {task.id}: {task.location}
                     </span>
                   </div>

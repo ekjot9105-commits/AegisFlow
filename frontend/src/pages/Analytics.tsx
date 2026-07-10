@@ -39,7 +39,7 @@ export default function Analytics() {
           <CardHeader>
             <CardTitle>Historical Crowd Density (24h)</CardTitle>
           </CardHeader>
-          <CardContent className="h-64 flex items-center justify-center border-t border-white/5">
+          <CardContent className="h-64 flex items-center justify-center border-t border-borderWhite/10">
             <div className="w-full h-full p-4 flex items-end gap-2" aria-label="Bar chart showing crowd density">
               {[40, 55, 30, 80, 95, 85, 60, 45, 70, 90, 65, 50].map((h, i) => (
                 <div key={i} className="flex-1 bg-primary/50 hover:bg-primary transition-colors rounded-t-sm" style={{ height: `${h}%` }}></div>
@@ -52,7 +52,7 @@ export default function Analytics() {
           <CardHeader>
             <CardTitle>AI Prediction Accuracy Trend</CardTitle>
           </CardHeader>
-          <CardContent className="h-64 flex items-center justify-center border-t border-white/5">
+          <CardContent className="h-64 flex items-center justify-center border-t border-borderWhite/10">
             <div className="w-full h-full relative p-4" aria-label="Line chart showing prediction accuracy">
                <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
                  <path d="M0,80 Q20,90 40,50 T80,30 T100,20" fill="none" stroke="currentColor" className="text-accent" strokeWidth="2" />

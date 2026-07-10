@@ -37,10 +37,10 @@ const HeatmapNode = memo(({ id, x, y, risk, name, density, prediction, recommend
       )}
       
       {/* Base Node */}
-      <circle cx={x} cy={y} r="10" fill={color} stroke="#fff" strokeWidth="2" className="transition-all duration-300 hover:scale-125" style={{ transformOrigin: `${x}px ${y}px` }} />
+      <circle cx={x} cy={y} r="10" fill={color} stroke="var(--bg-surface)" strokeWidth="2" className="transition-all duration-300 hover:scale-125" style={{ transformOrigin: `${x}px ${y}px` }} />
       
       {/* Label */}
-      <text x={x} y={y + 25} fill="#fff" fontSize="12" textAnchor="middle" fontWeight="bold" className="pointer-events-none drop-shadow-md">
+      <text x={x} y={y + 25} fill="var(--text-primary)" fontSize="12" textAnchor="middle" fontWeight="bold" className="pointer-events-none drop-shadow-md">
         {id}
       </text>
     </g>
@@ -139,7 +139,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             {title}
           </CardTitle>
-          {subtitle && <h2 className="text-xl font-bold text-white tracking-wide">{subtitle}</h2>}
+          {subtitle && <h2 className="text-xl font-bold text-textPrimary tracking-wide">{subtitle}</h2>}
         </div>
         <div className="flex items-center gap-2">
           <input type="checkbox" id="showHeatmap" className="accent-primary" checked={showHeatmap} onChange={(e) => setShowHeatmap(e.target.checked)} />
@@ -168,7 +168,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
         <div className="w-full h-full max-h-[600px] aspect-video relative z-0">
           <svg viewBox="0 0 800 600" className="w-full h-full drop-shadow-2xl">
             {/* Concentric Stadium Rings */}
-            <g stroke="#ffffff" strokeOpacity="0.05" strokeWidth="2" fill="none">
+            <g className="stroke-textPrimary" strokeOpacity="0.1" strokeWidth="2" fill="none">
               <circle cx="400" cy="300" r="250" />
               <circle cx="400" cy="300" r="200" />
               <circle cx="400" cy="300" r="150" />
@@ -189,7 +189,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
             </g>
 
             {/* Gate Labels */}
-            <g fill="#ffffff" fillOpacity="0.3" fontSize="10" fontWeight="bold" textAnchor="middle" letterSpacing="2">
+            <g className="fill-textPrimary" fillOpacity="0.4" fontSize="10" fontWeight="bold" textAnchor="middle" letterSpacing="2">
               <text x="400" y="40">NORTH GATE</text>
               <text x="400" y="570">SOUTH GATE</text>
               <text x="760" y="305">EAST GATE</text>
@@ -243,7 +243,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
         </div>
 
         {/* Heatmap Legend */}
-        <div className="absolute bottom-6 right-6 glass-panel bg-surface/80 p-4 rounded-xl border border-white/10 shadow-lg text-xs z-10 backdrop-blur-md">
+        <div className="absolute bottom-6 right-6 glass-panel bg-surface/80 p-4 rounded-xl border border-borderWhite/20 shadow-lg text-xs z-10 backdrop-blur-md">
           <div className="font-bold uppercase tracking-wider text-textSecondary mb-3">Heatmap Key</div>
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2"><div className="w-3 h-3 rounded-full bg-[#10b981]" /> Smooth Flow / Safe</div>
@@ -263,16 +263,16 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
               style={{ left: `50%`, top: `20px`, transform: `translateX(-50%)` }}
             >
               {/* Top Row: Basic Info */}
-              <div className="flex gap-6 items-center border-b border-white/10 pb-3">
+              <div className="flex gap-6 items-center border-b border-borderWhite/10 pb-3">
                 <div>
                   <div className="text-xs text-textSecondary uppercase tracking-wider">{hoveredSector.name}</div>
-                  <div className="font-bold text-lg text-white">{hoveredSector.id}</div>
+                  <div className="font-bold text-lg text-textPrimary">{hoveredSector.id}</div>
                 </div>
-                <div className="border-l border-white/10 pl-4">
+                <div className="border-l border-borderWhite/10 pl-4">
                   <div className="text-xs text-textSecondary uppercase">Density</div>
-                  <div className="font-bold text-white">{hoveredSector.density}%</div>
+                  <div className="font-bold text-textPrimary">{hoveredSector.density}%</div>
                 </div>
-                <div className="border-l border-white/10 pl-4">
+                <div className="border-l border-borderWhite/10 pl-4">
                   <div className="text-xs text-textSecondary uppercase">Risk Level</div>
                   <div className="font-bold capitalize" style={{ color: getRiskColor(hoveredSector.risk) }}>{hoveredSector.risk}</div>
                 </div>
@@ -282,15 +282,15 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div>
                   <span className="text-textSecondary block mb-1">AI Prediction</span>
-                  <span className="font-medium text-white">{hoveredSector.prediction || 'Calculating...'}</span>
+                  <span className="font-medium text-textPrimary">{hoveredSector.prediction || 'Calculating...'}</span>
                 </div>
                 <div>
                   <span className="text-textSecondary block mb-1">Queue Time</span>
-                  <span className="font-medium text-white">{hoveredSector.queue_time || '--'}</span>
+                  <span className="font-medium text-textPrimary">{hoveredSector.queue_time || '--'}</span>
                 </div>
                 <div>
                   <span className="text-textSecondary block mb-1">10m Expected Crowd</span>
-                  <span className="font-medium text-white">{hoveredSector.expected_crowd || '--'}</span>
+                  <span className="font-medium text-textPrimary">{hoveredSector.expected_crowd || '--'}</span>
                 </div>
                 <div>
                   <span className="text-textSecondary block mb-1">Confidence</span>
@@ -298,7 +298,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
                 </div>
                 <div className="col-span-2 mt-1 p-2 bg-primary/10 rounded border border-primary/20">
                   <span className="text-primary font-semibold block mb-1">Actionable Recommendation</span>
-                  <span className="text-white">{hoveredSector.recommendation || 'No action needed'}</span>
+                  <span className="text-textPrimary">{hoveredSector.recommendation || 'No action needed'}</span>
                 </div>
               </div>
             </motion.div>

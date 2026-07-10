@@ -42,13 +42,13 @@ export default function Modal({ isOpen, onClose, title, children, footer }: Moda
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-lg glass-card border border-white/10 shadow-2xl flex flex-col m-4 max-h-[90vh]"
+            className="relative w-full max-w-lg glass-card border border-borderWhite/20 shadow-2xl flex flex-col m-4 max-h-[90vh]"
           >
-            <div className="flex items-center justify-between p-6 border-b border-white/5">
+            <div className="flex items-center justify-between p-6 border-b border-borderWhite/10">
               <h2 className="text-xl font-semibold">{title}</h2>
               <button
                 onClick={onClose}
-                className="p-1 rounded-md hover:bg-white/10 transition-colors text-textSecondary hover:text-textPrimary"
+                className="p-1 rounded-md hover:bg-textPrimary/10 transition-colors text-textSecondary hover:text-textPrimary"
               >
                 <X size={20} />
               </button>
@@ -59,7 +59,7 @@ export default function Modal({ isOpen, onClose, title, children, footer }: Moda
             </div>
 
             {footer && (
-              <div className="p-6 border-t border-white/5 bg-surface/50 rounded-b-xl flex justify-end gap-3">
+              <div className="p-6 border-t border-borderWhite/10 bg-surface/50 rounded-b-xl flex justify-end gap-3">
                 {footer}
               </div>
             )}

@@ -39,32 +39,32 @@ export default function GlobalHeader() {
             </div>
             <div>
               <div className="text-[9px] text-primary uppercase tracking-[0.2em] font-bold leading-none mb-0.5">FIFA World Cup 2026</div>
-              <h1 className="text-xl font-extrabold tracking-widest bg-gradient-to-r from-white via-primary to-info bg-clip-text text-transparent leading-none">AegisFlow</h1>
+              <h1 className="text-xl font-extrabold tracking-widest bg-gradient-to-r from-textPrimary via-primary to-info bg-clip-text text-transparent leading-none">AegisFlow</h1>
             </div>
           </NavLink>
 
           {/* Center Navigation Pills (Desktop) */}
-          <nav className="hidden md:flex items-center bg-surface/50 p-1 rounded-full border border-white/5 shadow-inner">
-            <NavLink to="/dashboard" className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${isDashboard ? 'bg-primary text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-textSecondary hover:text-white hover:bg-white/5'}`}>Operations</NavLink>
-            <NavLink to="/fan-portal" className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${isFan ? 'bg-info text-white shadow-[0_0_15px_rgba(14,165,233,0.4)]' : 'text-textSecondary hover:text-white hover:bg-white/5'}`}>Fan Hub</NavLink>
-            <NavLink to="/volunteers" className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${isVolunteer ? 'bg-accent text-white shadow-[0_0_15px_rgba(139,92,246,0.4)]' : 'text-textSecondary hover:text-white hover:bg-white/5'}`}>Volunteers</NavLink>
+          <nav className="hidden md:flex items-center bg-surface/50 p-1 rounded-full border border-borderWhite/20 shadow-inner">
+            <NavLink to="/dashboard" className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${isDashboard ? 'bg-primary text-white shadow-[0_0_15px_rgba(34,197,94,0.4)]' : 'text-textSecondary hover:text-textPrimary hover:bg-textPrimary/5'}`}>Operations</NavLink>
+            <NavLink to="/fan-portal" className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${isFan ? 'bg-info text-white shadow-[0_0_15px_rgba(14,165,233,0.4)]' : 'text-textSecondary hover:text-textPrimary hover:bg-textPrimary/5'}`}>Fan Hub</NavLink>
+            <NavLink to="/volunteers" className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${isVolunteer ? 'bg-accent text-white shadow-[0_0_15px_rgba(139,92,246,0.4)]' : 'text-textSecondary hover:text-textPrimary hover:bg-textPrimary/5'}`}>Volunteers</NavLink>
           </nav>
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
             {/* Live AI Status Widget */}
-            <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-surface/50 border border-white/5 rounded-full shadow-inner" aria-live="polite">
+            <div className="hidden lg:flex items-center gap-2 px-3 py-1 bg-surface/50 border border-borderWhite/20 rounded-full shadow-inner" aria-live="polite">
               <span className="w-2 h-2 rounded-full bg-primary animate-pulse" aria-hidden="true"></span>
               <span className="text-[10px] font-semibold text-textSecondary uppercase tracking-wider">AI Active</span>
             </div>
 
-            <div className="w-px h-4 bg-white/10 mx-1 hidden sm:block"></div>
+            <div className="w-px h-4 bg-borderWhite/20 mx-1 hidden sm:block"></div>
 
-            <button onClick={toggleTheme} className="p-1.5 rounded-full bg-surface/50 hover:bg-surfaceHighlight border border-white/5 transition-colors focus:ring-2 focus:ring-primary outline-none" aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
+            <button onClick={toggleTheme} className="p-1.5 rounded-full bg-surface/50 hover:bg-surfaceHighlight border border-borderWhite/20 transition-colors focus:ring-2 focus:ring-primary outline-none" aria-label={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
               {isDarkMode ? <Sun size={16} className="text-textSecondary" /> : <Moon size={16} className="text-textSecondary" />}
             </button>
 
-            <NavLink to="/settings" className="p-1.5 rounded-full bg-surface/50 hover:bg-surfaceHighlight border border-white/5 transition-colors focus:ring-2 focus:ring-primary outline-none" aria-label="Settings">
+            <NavLink to="/settings" className="p-1.5 rounded-full bg-surface/50 hover:bg-surfaceHighlight border border-borderWhite/20 transition-colors focus:ring-2 focus:ring-primary outline-none" aria-label="Settings">
               <Settings size={16} className="text-textSecondary" />
             </NavLink>
 
@@ -72,7 +72,7 @@ export default function GlobalHeader() {
             <div className="relative" ref={notifRef}>
               <button 
                 onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-                className="p-1.5 rounded-full bg-surface/50 hover:bg-surfaceHighlight border border-white/5 transition-colors relative focus:ring-2 focus:ring-primary outline-none"
+                className="p-1.5 rounded-full bg-surface/50 hover:bg-surfaceHighlight border border-borderWhite/20 transition-colors relative focus:ring-2 focus:ring-primary outline-none"
                 aria-label="Notifications"
                 aria-expanded={isNotificationsOpen}
               >
@@ -81,17 +81,17 @@ export default function GlobalHeader() {
               </button>
               
               {isNotificationsOpen && (
-                <div className="absolute right-0 mt-2 w-80 glass-panel bg-surface/95 border border-white/10 rounded-xl shadow-2xl z-50 overflow-hidden animate-fade-in origin-top-right">
-                  <div className="p-3 border-b border-white/10 flex justify-between items-center bg-surfaceHighlight/80 backdrop-blur-md">
-                    <span className="font-bold text-sm text-white">System Alerts</span>
+                <div className="absolute right-0 mt-2 w-80 glass-panel bg-surface/95 border border-borderWhite/20 rounded-xl shadow-2xl z-50 overflow-hidden animate-fade-in origin-top-right">
+                  <div className="p-3 border-b border-borderWhite/20 flex justify-between items-center bg-surfaceHighlight/80 backdrop-blur-md">
+                    <span className="font-bold text-sm text-textPrimary">System Alerts</span>
                     <button className="text-xs text-primary hover:underline outline-none focus-visible:ring-2 focus-visible:ring-primary rounded px-1">Mark all read</button>
                   </div>
                   <div className="flex flex-col max-h-[300px] overflow-y-auto">
                     {/* Example Notification */}
-                    <div className="p-4 border-b border-white/5 hover:bg-white/5 cursor-pointer flex gap-3 items-start transition-colors focus-visible:bg-white/5 outline-none" tabIndex={0}>
+                    <div className="p-4 border-b border-borderWhite/10 hover:bg-textPrimary/5 cursor-pointer flex gap-3 items-start transition-colors focus-visible:bg-textPrimary/5 outline-none" tabIndex={0}>
                       <ShieldAlert className="w-4 h-4 text-warning flex-shrink-0 mt-0.5" />
                       <div>
-                        <div className="text-sm font-semibold text-white leading-none mb-1">High density detected</div>
+                        <div className="text-sm font-semibold text-textPrimary leading-none mb-1">High density detected</div>
                         <div className="text-xs text-textSecondary leading-snug">AI Copilot requires execution approval for Gate 4.</div>
                         <div className="text-[10px] text-textSecondary/60 mt-2 font-mono">2 mins ago</div>
                       </div>
@@ -102,7 +102,7 @@ export default function GlobalHeader() {
             </div>
 
             {/* User Role Indicator */}
-            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-white/10">
+            <div className="hidden sm:flex items-center gap-2 pl-3 border-l border-borderWhite/20">
               <div className="w-6 h-6 rounded-full bg-primary/20 border border-primary/50 flex items-center justify-center">
                 <span className="text-[10px] font-bold text-primary">OP</span>
               </div>

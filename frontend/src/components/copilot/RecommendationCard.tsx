@@ -30,7 +30,7 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
       <div className="relative z-10 p-6 border-b border-primary/20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface/80 backdrop-blur-md">
         <div>
           <div className="flex items-center gap-3 mb-2">
-            <h2 className="text-xl font-bold tracking-tight text-white">{data.incident_id}</h2>
+            <h2 className="text-xl font-bold tracking-tight text-textPrimary">{data.incident_id}</h2>
             <RiskBadge score={data.risk_score} />
           </div>
           <p className="text-sm text-textSecondary max-w-2xl">{data.situation_summary}</p>

@@ -133,7 +133,7 @@ export default function BilingualConcierge() {
           <CardTitle className="text-sm font-bold uppercase tracking-wider">Bilingual Fan Concierge</CardTitle>
         </div>
         <select 
-          className="bg-surface/50 border border-white/10 rounded-md text-sm p-1 outline-none focus:ring-1 focus:ring-primary"
+          className="bg-surface/50 border border-borderWhite/20 rounded-md text-sm p-1 outline-none focus:ring-1 focus:ring-primary"
           value={lang}
           onChange={(e) => setLang(e.target.value)}
           aria-label="Select Language"
@@ -154,7 +154,7 @@ export default function BilingualConcierge() {
             <button
               key={preset.id}
               onClick={() => handlePresetClick(preset.id)}
-              className={`text-left p-3 rounded-lg border transition-all flex items-center justify-between group ${activeQuery === preset.id ? 'bg-primary/20 border-primary shadow-[0_0_10px_rgba(34,197,94,0.2)]' : 'bg-surface/30 border-white/10 hover:border-primary/50'}`}
+              className={`text-left p-3 rounded-lg border transition-all flex items-center justify-between group ${activeQuery === preset.id ? 'bg-primary/20 border-primary shadow-[0_0_10px_rgba(34,197,94,0.2)]' : 'bg-surface/30 border-borderWhite/20 hover:border-primary/50'}`}
               aria-label={`Ask: ${preset.en}`}
             >
               <div className="flex flex-col">
@@ -172,7 +172,7 @@ export default function BilingualConcierge() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="p-4 bg-surfaceHighlight/30 rounded-xl border border-white/5 relative"
+              className="p-4 bg-surfaceHighlight/30 rounded-xl border border-borderWhite/20 relative"
             >
               <Sparkles className="w-4 h-4 text-info absolute top-3 left-3" />
               <div className="pl-6 text-sm text-textPrimary leading-relaxed min-h-[40px]" aria-live="polite" aria-atomic="true">
@@ -191,13 +191,13 @@ export default function BilingualConcierge() {
           )}
         </AnimatePresence>
 
-        <form onSubmit={handleCustomSubmit} className="mt-auto pt-4 border-t border-white/5 relative">
+        <form onSubmit={handleCustomSubmit} className="mt-auto pt-4 border-t border-borderWhite/20 relative">
           <input
             type="text"
             placeholder="Ask Fan Copilot..."
             value={customInput}
             onChange={(e) => setCustomInput(e.target.value)}
-            className="w-full bg-surface/50 border border-white/10 rounded-lg py-3 px-4 pr-12 text-sm focus:ring-2 focus:ring-primary outline-none"
+            className="w-full bg-surface/50 border border-borderWhite/20 rounded-lg py-3 px-4 pr-12 text-sm focus:ring-2 focus:ring-primary outline-none"
             aria-label="Custom Copilot Query"
           />
           <button 

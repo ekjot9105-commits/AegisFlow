@@ -6,7 +6,7 @@ export default function ReasoningPanel({ reasoning }: { reasoning: string }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-white/10 rounded-lg overflow-hidden bg-surfaceHighlight/20">
+    <div className="border border-borderWhite/20 rounded-lg overflow-hidden bg-surfaceHighlight/20">
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="w-full p-4 flex items-center justify-between hover:bg-surfaceHighlight/30 transition-colors"
@@ -27,7 +27,7 @@ export default function ReasoningPanel({ reasoning }: { reasoning: string }) {
             exit={{ height: 0, opacity: 0 }}
             className="overflow-hidden"
           >
-            <div className="p-4 pt-0 text-sm text-textSecondary leading-relaxed border-t border-white/5 mt-2 pt-4">
+            <div className="p-4 pt-0 text-sm text-textSecondary leading-relaxed border-t border-borderWhite/10 mt-2 pt-4">
               {reasoning}
             </div>
           </motion.div>

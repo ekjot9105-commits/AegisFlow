@@ -42,14 +42,14 @@ export function ToastProvider({ children }: { children: ReactNode }) {
               initial={{ opacity: 0, y: 50, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.2 } }}
-              className="glass-panel bg-surfaceHighlight/90 text-white px-4 py-3 rounded-lg shadow-2xl border border-primary/20 flex items-center gap-3 min-w-[250px]"
+              className="glass-panel bg-surfaceHighlight/90 text-textPrimary px-4 py-3 rounded-lg shadow-2xl border border-primary/20 flex items-center gap-3 min-w-[250px]"
               role="alert"
             >
               {toast.type === 'success' && <CheckCircle2 className="text-primary w-5 h-5" />}
               <span className="text-sm font-medium">{toast.message}</span>
               <button 
                 onClick={() => removeToast(toast.id)} 
-                className="ml-auto text-textSecondary hover:text-white transition-colors"
+                className="ml-auto text-textSecondary hover:text-textPrimary transition-colors"
                 aria-label="Close notification"
               >
                 <X size={16} />

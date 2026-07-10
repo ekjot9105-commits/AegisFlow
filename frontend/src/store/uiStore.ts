@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 interface UIState {
   isSidebarOpen: boolean;
@@ -11,13 +12,28 @@ interface UIState {
   setLanguage: (val: string) => void;
 }
 
-export const useUIStore = create<UIState>((set) => ({
-  isSidebarOpen: true,
-  isDarkMode: true,
-  reducedMotion: false,
-  language: 'en',
-  toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
-  toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
-  setReducedMotion: (val) => set({ reducedMotion: val }),
-  setLanguage: (val) => set({ language: val }),
-}));
+const getSystemTheme = () => {
+  if (typeof window !== 'undefined') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  return true;
+};
+
+export const useUIStore = create<UIState>()(
+  persist(
+    (set) => ({
+      isSidebarOpen: true,
+      isDarkMode: getSystemTheme(),
+      reducedMotion: false,
+      language: 'en',
+      toggleSidebar: () => set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
+      toggleTheme: () => set((state) => ({ isDarkMode: !state.isDarkMode })),
+      setReducedMotion: (val) => set({ reducedMotion: val }),
+      setLanguage: (val) => set({ language: val }),
+    }),
+    {
+      name: 'aegisflow-ui-storage',
+      partialize: (state) => ({ isDarkMode: state.isDarkMode, reducedMotion: state.reducedMotion, language: state.language }),
+    }
+  )
+);

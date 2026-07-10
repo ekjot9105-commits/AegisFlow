@@ -34,7 +34,7 @@ export default function IncidentTimeline() {
       case 'prediction': return 'bg-accent/20 text-accent';
       case 'approved': return 'bg-primary/20 text-primary';
       case 'announcement': return 'bg-info/20 text-info';
-      default: return 'bg-surfaceHighlight text-white';
+      default: return 'bg-surfaceHighlight text-textPrimary';
     }
   };
 
@@ -56,7 +56,7 @@ export default function IncidentTimeline() {
           />
         ) : (
           <div 
-            className="relative border-l border-white/10 ml-3 space-y-6 mt-4" 
+            className="relative border-l border-borderWhite/20 ml-3 space-y-6 mt-4" 
             aria-live="polite" 
             aria-atomic="false"
           >
@@ -89,8 +89,8 @@ export default function IncidentTimeline() {
                       exit={{ opacity: 0, height: 0 }}
                       className="overflow-hidden mt-3"
                     >
-                      <div className="p-3 bg-white/5 rounded-lg border border-white/5 text-xs text-textSecondary">
-                        <div className="flex items-center justify-between border-b border-white/5 pb-2 mb-2">
+                      <div className="p-3 bg-textPrimary/5 rounded-lg border border-borderWhite/10 text-xs text-textSecondary">
+                        <div className="flex items-center justify-between border-b border-borderWhite/10 pb-2 mb-2">
                           <span className="uppercase tracking-wider font-semibold">Event ID: {event.id}</span>
                           <span className="text-primary">{event.type.toUpperCase()}</span>
                         </div>

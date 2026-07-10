@@ -28,7 +28,7 @@ export default function Settings() {
                 onClick={toggleTheme}
                 className={`w-12 h-6 rounded-full transition-colors relative ${isDarkMode ? 'bg-primary' : 'bg-surfaceHighlight'}`}
               >
-                <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${isDarkMode ? 'left-7' : 'left-1'}`} />
+                <span className={`absolute top-1 w-4 h-4 rounded-full bg-textPrimary transition-transform ${isDarkMode ? 'left-7' : 'left-1'}`} />
               </button>
             </div>
 
@@ -43,7 +43,7 @@ export default function Settings() {
                 onClick={() => setReducedMotion(!reducedMotion)}
                 className={`w-12 h-6 rounded-full transition-colors relative ${reducedMotion ? 'bg-primary' : 'bg-surfaceHighlight'}`}
               >
-                <span className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-transform ${reducedMotion ? 'left-7' : 'left-1'}`} />
+                <span className={`absolute top-1 w-4 h-4 rounded-full bg-textPrimary transition-transform ${reducedMotion ? 'left-7' : 'left-1'}`} />
               </button>
             </div>
           </CardContent>
@@ -60,7 +60,7 @@ export default function Settings() {
                 aria-label="Select system language"
                 value={language}
                 onChange={(e) => setLanguage(e.target.value)}
-                className="w-full bg-surfaceHighlight/50 border border-white/10 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-primary"
+                className="w-full bg-surfaceHighlight/50 border border-borderWhite/20 rounded-lg p-2.5 text-sm outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="en">English (US)</option>
                 <option value="es">Español</option>
@@ -72,11 +72,11 @@ export default function Settings() {
               <h4 className="font-medium mb-2">Alert Preferences</h4>
               <div className="space-y-2 text-sm text-textSecondary">
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="rounded border-white/10 bg-surfaceHighlight text-primary focus:ring-primary" />
+                  <input type="checkbox" defaultChecked className="rounded border-borderWhite/20 bg-surfaceHighlight text-primary focus:ring-primary" />
                   <span>Push Notifications</span>
                 </label>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" defaultChecked className="rounded border-white/10 bg-surfaceHighlight text-primary focus:ring-primary" />
+                  <input type="checkbox" defaultChecked className="rounded border-borderWhite/20 bg-surfaceHighlight text-primary focus:ring-primary" />
                   <span>Audio Alerts (Critical Only)</span>
                 </label>
               </div>

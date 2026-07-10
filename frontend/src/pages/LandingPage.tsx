@@ -72,7 +72,7 @@ export default function LandingPage() {
             Live for FIFA World Cup 2026
           </div>
           
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white mb-6 leading-tight">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-textPrimary mb-6 leading-tight">
             The Future of <span className="bg-gradient-to-r from-primary via-info to-accent bg-clip-text text-transparent">Stadium Intelligence</span>
           </h1>
           
@@ -91,7 +91,7 @@ export default function LandingPage() {
               href="https://github.com/ekjot9105-commits/AegisFlow"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 bg-surfaceHighlight text-white font-bold rounded-lg border border-white/10 hover:bg-white/5 transition-all w-full sm:w-auto justify-center flex items-center gap-2"
+              className="px-8 py-4 bg-surfaceHighlight text-textPrimary font-bold rounded-lg border border-borderWhite/20 hover:bg-borderWhite/10 transition-all w-full sm:w-auto justify-center flex items-center gap-2"
             >
               View on GitHub
             </a>
@@ -100,10 +100,10 @@ export default function LandingPage() {
       </section>
 
       {/* Role Selection / Portals */}
-      <section className="relative w-full px-4 sm:px-6 lg:px-8 py-20 bg-surfaceHighlight/20 border-t border-b border-white/5">
+      <section className="relative w-full px-4 sm:px-6 lg:px-8 py-20 bg-surfaceHighlight/20 border-t border-b border-borderWhite/20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-white mb-4">Select Your Portal</h2>
+            <h2 className="text-3xl font-bold text-textPrimary mb-4">Select Your Portal</h2>
             <p className="text-textSecondary max-w-xl mx-auto">Access customized modules tailored specifically to your role in the stadium ecosystem.</p>
           </div>
           
@@ -118,10 +118,10 @@ export default function LandingPage() {
                 onClick={() => navigate(role.path)}
                 className={`glass-card p-6 cursor-pointer group bg-gradient-to-br ${role.color} border ${role.borderColor} transition-all hover:-translate-y-1 hover:shadow-2xl`}
               >
-                <div className={`w-14 h-14 rounded-xl bg-surface/80 border border-white/10 flex items-center justify-center mb-6 ${role.textColor} group-hover:scale-110 transition-transform shadow-inner`}>
+                <div className={`w-14 h-14 rounded-xl bg-surface/80 border border-borderWhite/20 flex items-center justify-center mb-6 ${role.textColor} group-hover:scale-110 transition-transform shadow-inner`}>
                   {role.icon}
                 </div>
-                <h3 className="text-xl font-bold text-white mb-2">{role.title}</h3>
+                <h3 className="text-xl font-bold text-textPrimary mb-2">{role.title}</h3>
                 <p className="text-sm text-textSecondary leading-relaxed mb-6 h-16">{role.description}</p>
                 <div className={`text-xs font-bold uppercase tracking-wider flex items-center gap-2 ${role.textColor}`}>
                   Access Module <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
@@ -139,24 +139,24 @@ export default function LandingPage() {
             
             <div className="space-y-8">
               <div>
-                <h2 className="text-3xl font-bold text-white mb-4">Powered by Advanced GenAI</h2>
+                <h2 className="text-3xl font-bold text-textPrimary mb-4">Powered by Advanced GenAI</h2>
                 <p className="text-textSecondary leading-relaxed text-lg">
                   Traditional dashboards only show you what happened. AegisFlow's Copilot tells you what will happen, explains why, and provides a one-click execution strategy to mitigate it.
                 </p>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div className="glass-panel p-5 rounded-xl border border-white/5">
+                <div className="glass-panel p-5 rounded-xl border border-borderWhite/20">
                   <div className="flex items-center gap-3 mb-2">
                     <Zap className="text-primary w-5 h-5" />
-                    <h4 className="font-bold text-white">Sub-Second Processing</h4>
+                    <h4 className="font-bold text-textPrimary">Sub-Second Processing</h4>
                   </div>
                   <p className="text-sm text-textSecondary">Real-time SSE streams parse IoT telemetry instantly.</p>
                 </div>
-                <div className="glass-panel p-5 rounded-xl border border-white/5">
+                <div className="glass-panel p-5 rounded-xl border border-borderWhite/20">
                   <div className="flex items-center gap-3 mb-2">
                     <MonitorSmartphone className="text-info w-5 h-5" />
-                    <h4 className="font-bold text-white">Responsive Design</h4>
+                    <h4 className="font-bold text-textPrimary">Responsive Design</h4>
                   </div>
                   <p className="text-sm text-textSecondary">Accessible on all devices, optimizing field ops.</p>
                 </div>

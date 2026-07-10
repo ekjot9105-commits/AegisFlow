@@ -14,7 +14,7 @@ export default function EvidencePanel({ evidence }: { evidence: string[] }) {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="text-sm bg-surfaceHighlight/30 p-2.5 rounded-md border border-white/5 flex items-start gap-2"
+            className="text-sm bg-surfaceHighlight/30 p-2.5 rounded-md border border-borderWhite/10 flex items-start gap-2"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-accent mt-1.5 flex-shrink-0" />
             <span className="text-textPrimary leading-snug">{item}</span>

@@ -40,7 +40,7 @@ function ProtectedRoute({ children, allowedRoles }: { children: ReactNode, allow
   
   if (!allowedRoles.includes(mockUserRole)) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-surface text-white">
+      <div className="flex flex-col items-center justify-center h-screen bg-surface text-textPrimary">
         <h1 className="text-4xl font-bold text-danger mb-4">403 - Forbidden</h1>
         <p className="text-textSecondary">Your role ({mockUserRole}) does not have clearance for this dashboard.</p>
         <button onClick={() => window.location.href = '/fan-portal'} className="mt-6 px-4 py-2 bg-primary rounded">Return to Fan Portal</button>

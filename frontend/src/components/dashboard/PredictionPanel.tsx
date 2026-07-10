@@ -15,7 +15,7 @@ export default function PredictionPanel() {
       <CardContent>
         <div className="flex flex-col md:flex-row gap-6">
           <div className="flex-1 space-y-4">
-            <div className="p-4 rounded-lg bg-surfaceHighlight/30 border border-white/5">
+            <div className="p-4 rounded-lg bg-surfaceHighlight/30 border border-borderWhite/10">
               <h4 className="font-semibold text-sm mb-2 flex items-center gap-2">
                 <Zap size={16} className="text-warning" /> Critical Alert: Gate 4 Overcrowding
               </h4>
@@ -30,7 +30,7 @@ export default function PredictionPanel() {
             </div>
           </div>
           
-          <div className="w-full md:w-1/3 flex flex-col justify-center items-center p-4 border-l md:border-l-white/5 border-t md:border-t-0 border-white/5">
+          <div className="w-full md:w-1/3 flex flex-col justify-center items-center p-4 border-l md:border-l-borderWhite/10 border-t md:border-t-0 border-borderWhite/10">
             <div className="relative w-24 h-24 mb-2">
               <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" stroke="rgba(255,255,255,0.1)" strokeWidth="8" fill="none" />

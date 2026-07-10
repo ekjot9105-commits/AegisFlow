@@ -9,7 +9,7 @@ function cn(...inputs: ClassValue[]) {
 
 export const Table = forwardRef<HTMLTableElement, HTMLAttributes<HTMLTableElement>>(
   ({ className, ...props }, ref) => (
-    <div className="w-full overflow-auto rounded-lg border border-white/5 bg-surfaceHighlight/10">
+    <div className="w-full overflow-auto rounded-lg border border-borderWhite/10 bg-surfaceHighlight/10">
       <table
         ref={ref}
         className={cn('w-full caption-bottom text-sm', className)}
@@ -22,7 +22,7 @@ Table.displayName = 'Table';
 
 export const TableHeader = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
-    <thead ref={ref} className={cn('[&_tr]:border-b border-white/10', className)} {...props} />
+    <thead ref={ref} className={cn('[&_tr]:border-b border-borderWhite/20', className)} {...props} />
   )
 );
 TableHeader.displayName = 'TableHeader';
@@ -43,7 +43,7 @@ export const TableRow = forwardRef<HTMLTableRowElement, HTMLAttributes<HTMLTable
     <tr
       ref={ref}
       className={cn(
-        'border-b border-white/5 transition-colors hover:bg-surfaceHighlight/30 data-[state=selected]:bg-surfaceHighlight/50',
+        'border-b border-borderWhite/10 transition-colors hover:bg-surfaceHighlight/30 data-[state=selected]:bg-surfaceHighlight/50',
         className
       )}
       {...props}

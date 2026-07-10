@@ -22,7 +22,7 @@ export default function EmptyState({
       <div className="mb-4">
         {icon}
       </div>
-      <p className="text-sm font-bold text-white mb-2 tracking-wide uppercase">{title}</p>
+      <p className="text-sm font-bold text-textPrimary mb-2 tracking-wide uppercase">{title}</p>
       <p className="text-xs max-w-[250px] leading-relaxed text-textSecondary/80">{description}</p>
     </motion.div>
   );

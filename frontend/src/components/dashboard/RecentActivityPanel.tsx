@@ -24,13 +24,13 @@ export default function RecentActivityPanel() {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="flex items-start gap-3 p-3 rounded-lg hover:bg-white/5 transition-colors cursor-default border border-transparent hover:border-white/5"
+              className="flex items-start gap-3 p-3 rounded-lg hover:bg-textPrimary/5 transition-colors cursor-default border border-transparent hover:border-borderWhite/10"
             >
-              <div className="mt-0.5 p-1.5 rounded bg-surface border border-white/5 shadow-inner">
+              <div className="mt-0.5 p-1.5 rounded bg-surface border border-borderWhite/20 shadow-inner">
                 {activity.icon}
               </div>
               <div>
-                <p className="text-xs text-white leading-relaxed">{activity.text}</p>
+                <p className="text-xs text-textPrimary leading-relaxed">{activity.text}</p>
                 <p className="text-[10px] text-textSecondary font-mono mt-1">{activity.time}</p>
               </div>
             </motion.div>

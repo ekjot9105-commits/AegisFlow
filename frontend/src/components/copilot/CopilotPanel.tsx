@@ -45,7 +45,7 @@ export default function CopilotPanel() {
     return (
       <div className="flex flex-col items-center justify-center h-full min-h-[400px] glass-card">
         <WifiOff className="w-12 h-12 text-textSecondary mb-4" />
-        <h3 className="text-lg font-semibold text-white">System Offline</h3>
+        <h3 className="text-lg font-semibold text-textPrimary">System Offline</h3>
         <p className="text-sm text-textSecondary mt-2">Check your connection to resume AI operations.</p>
       </div>
     );
@@ -61,9 +61,9 @@ export default function CopilotPanel() {
     return (
       <div className="flex flex-col items-center justify-center h-full min-h-[400px] glass-card border border-danger/30" role="alert">
         <AlertTriangle className="w-12 h-12 text-danger mb-4" />
-        <h3 className="text-lg font-semibold text-white">Analysis Failed</h3>
+        <h3 className="text-lg font-semibold text-textPrimary">Analysis Failed</h3>
         <p className="text-sm text-textSecondary mt-2 mb-6">{(error as Error).message}</p>
-        <button onClick={() => refetch()} className="px-4 py-2 bg-white/10 hover:bg-white/20 rounded text-sm text-white flex items-center transition-colors">
+        <button onClick={() => refetch()} className="px-4 py-2 bg-textPrimary/10 hover:bg-textPrimary/20 rounded text-sm text-textPrimary flex items-center transition-colors">
           <RefreshCw className="w-4 h-4 mr-2" /> Retry Analysis
         </button>
       </div>

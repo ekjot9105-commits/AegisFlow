@@ -13,14 +13,14 @@ export default function DashboardLayout() {
     <div className="flex flex-col flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 z-10 relative">
       
       {/* Top Breadcrumb and Ops Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-white/5 pb-4">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-borderWhite/20 pb-4">
         <div>
           <Breadcrumbs />
-          <h2 className="text-2xl font-bold text-white tracking-wide">Operations Command Centre</h2>
+          <h2 className="text-2xl font-bold text-textPrimary tracking-wide">Operations Command Centre</h2>
         </div>
         
         {/* Local Ops Sub-Navigation */}
-        <nav className="flex items-center gap-1 bg-surface/50 p-1 rounded-lg border border-white/5 shadow-inner overflow-x-auto">
+        <nav className="flex items-center gap-1 bg-surface/50 p-1 rounded-lg border border-borderWhite/20 shadow-inner overflow-x-auto">
           {navLinks.map((link) => (
             <NavLink
               key={link.path}
@@ -28,8 +28,8 @@ export default function DashboardLayout() {
               className={({ isActive }) => 
                 `px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
                   isActive 
-                    ? 'bg-white/10 text-white shadow-sm' 
-                    : 'text-textSecondary hover:text-white hover:bg-white/5'
+                    ? 'bg-borderWhite/20 text-textPrimary shadow-sm' 
+                    : 'text-textSecondary hover:text-textPrimary hover:bg-textPrimary/5'
                 }`
               }
             >
