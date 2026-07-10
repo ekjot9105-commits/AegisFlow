@@ -128,25 +128,6 @@ pip install -r requirements.txt
 ```
 
 ---
-
-## 🔑 Environment Variables
-
-Create a `.env` file in the `backend/` directory:
-```env
-# AI Services
-GEMINI_API_KEY=your_google_gemini_key
-
-# Security
-SECRET_KEY=your_secure_secret_key
-
-# Configuration
-ENVIRONMENT=development
-CORS_ORIGINS=http://localhost:5173
-```
-*(Note: Do NOT expose secrets or API keys in version control.)*
-
----
-
 ## 🏃 Running the Project
 
 ### Development Mode
@@ -169,20 +150,6 @@ cd frontend
 npm run build
 # Serve the /dist folder using any static server (e.g., serve, nginx)
 ```
-
----
-
-## 📸 Screenshots
-
-| Landing Page | Operations Dashboard |
-|:---:|:---:|
-| *(Placeholder: media/screenshots/landing.png)*<br>The main entry point for the platform. | *(Placeholder: media/screenshots/dashboard.png)*<br>Real-time KPIs and incident timelines. |
-| **Fan Hub (Multilingual)** | **AI Copilot & Heatmap** |
-| *(Placeholder: media/screenshots/fan-hub.png)*<br>AI concierge assisting fans in multiple languages. | *(Placeholder: media/screenshots/copilot.png)*<br>Predictive AI reasoning and real-time SVG heatmap. |
-| **Volunteer Dashboard** | **Analytics** |
-| *(Placeholder: media/screenshots/volunteer.png)*<br>Geolocation-based task dispatching. | *(Placeholder: media/screenshots/analytics.png)*<br>Historical trends and AI accuracy charts. |
-
----
 
 ## 🌐 API Overview
 
