@@ -1,13 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import { fetchKPIData } from '../../services/dashboard';
 import { Card } from '../ui/Card';
 import SkeletonLoader from '../ui/SkeletonLoader';
 import { Users, AlertTriangle, BrainCircuit, ShieldHalf, Activity, Target, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useCountUp } from '../../hooks/useCountUp';
-import { useWebSocket } from '../../services/websocket';
+import { useDashboardMetrics } from '../../hooks/useDashboardMetrics';
+import { formatPercentage, formatNumber } from '../../utils/formatters';
 
-function AnimatedNumber({ value, format }: { value: any, format: (v: any) => string }) {
+function AnimatedNumber({ value, format }: { value: number | string, format: (v: number | string) => string }) {
   const numericValue = typeof value === 'number' ? value : 0;
   const count = useCountUp(numericValue, 1500);
 
@@ -18,28 +17,17 @@ function AnimatedNumber({ value, format }: { value: any, format: (v: any) => str
 }
 
 const kpiConfig = [
-  { key: 'crowdDensity', label: 'Crowd Density', icon: Users, format: (v: any) => `${v}%`, color: 'text-warning' },
-  { key: 'activeIncidents', label: 'Active Incidents', icon: AlertTriangle, format: (v: any) => v, color: 'text-danger' },
-  { key: 'aiConfidence', label: 'AI Confidence', icon: BrainCircuit, format: (v: any) => `${v}%`, color: 'text-accent' },
-  { key: 'volunteers', label: 'Active Volunteers', icon: ShieldHalf, format: (v: any) => v, color: 'text-primary' },
-  { key: 'medicalAlerts', label: 'Medical Alerts', icon: Activity, format: (v: any) => v, color: 'text-danger' },
-  { key: 'predictionAccuracy', label: 'Prediction Accuracy', icon: Target, format: (v: any) => `${v}%`, color: 'text-accent' },
-  { key: 'averageResponseTime', label: 'Avg Response Time', icon: Clock, format: (v: any) => v, color: 'text-primary' },
+  { key: 'crowdDensity', label: 'Crowd Density', icon: Users, format: formatPercentage, color: 'text-warning' },
+  { key: 'activeIncidents', label: 'Active Incidents', icon: AlertTriangle, format: formatNumber, color: 'text-danger' },
+  { key: 'aiConfidence', label: 'AI Confidence', icon: BrainCircuit, format: formatPercentage, color: 'text-accent' },
+  { key: 'volunteers', label: 'Active Volunteers', icon: ShieldHalf, format: formatNumber, color: 'text-primary' },
+  { key: 'medicalAlerts', label: 'Medical Alerts', icon: Activity, format: formatNumber, color: 'text-danger' },
+  { key: 'predictionAccuracy', label: 'Prediction Accuracy', icon: Target, format: formatPercentage, color: 'text-accent' },
+  { key: 'averageResponseTime', label: 'Avg Response Time', icon: Clock, format: formatNumber, color: 'text-primary' },
 ];
 
 export default function KPICards() {
-  const wsUrl = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/api/v1/ws/kpi';
-  const { data: wsData, status: wsStatus } = useWebSocket<any>(wsUrl);
-
-  const isWsConnected = wsStatus === 'connected';
-
-  const { data: queryData, isLoading } = useQuery({
-    queryKey: ['kpiData'],
-    queryFn: fetchKPIData,
-    refetchInterval: isWsConnected ? false : 10000
-  });
-
-  const data = isWsConnected && wsData ? wsData : queryData;
+  const { data, isLoading } = useDashboardMetrics();
 
   const container = {
     hidden: { opacity: 0 },

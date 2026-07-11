@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, ShieldCheck, Zap, Globe, Users, BrainCircuit, MonitorSmartphone } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Zap, Globe, Users, BrainCircuit, MonitorSmartphone, Activity, Target, CheckCircle2 } from 'lucide-react';
 import { useCountUp } from '../hooks/useCountUp';
 
 export default function LandingPage() {
@@ -126,6 +126,43 @@ export default function LandingPage() {
                 <div className={`text-xs font-bold uppercase tracking-wider flex items-center gap-2 ${role.textColor}`}>
                   Access Module <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="relative w-full px-4 sm:px-6 lg:px-8 py-24 bg-bg-base">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl font-bold text-textPrimary mb-4">How AegisFlow Works</h2>
+            <p className="text-textSecondary max-w-xl mx-auto">An end-to-end operational intelligence loop powered by Generative AI.</p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+            {/* Connecting Line */}
+            <div className="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-borderWhite/10 -translate-y-1/2 z-0"></div>
+            
+            {[
+              { title: '1. Detect', desc: 'IoT & APIs stream real-time crowd, transit, and security data.', icon: <Activity size={24} className="text-info" /> },
+              { title: '2. Predict', desc: 'GenAI forecasts bottlenecks and risks 15 mins before they occur.', icon: <Target size={24} className="text-accent" /> },
+              { title: '3. Mitigate', desc: 'Copilot generates multi-role strategies optimizing transit & sustainability.', icon: <BrainCircuit size={24} className="text-primary" /> },
+              { title: '4. Execute', desc: 'One-click deployment to Volunteers, Signage, and Fan Portals.', icon: <CheckCircle2 size={24} className="text-warning" /> }
+            ].map((step, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.15 }}
+                className="relative z-10 glass-panel p-6 rounded-xl border border-borderWhite/20 flex flex-col items-center text-center bg-surface/90 backdrop-blur"
+              >
+                <div className="w-12 h-12 rounded-full bg-surfaceHighlight border border-borderWhite/20 flex items-center justify-center mb-4 shadow-lg">
+                  {step.icon}
+                </div>
+                <h3 className="text-lg font-bold text-textPrimary mb-2">{step.title}</h3>
+                <p className="text-sm text-textSecondary">{step.desc}</p>
               </motion.div>
             ))}
           </div>

@@ -2,13 +2,10 @@ import { useState, useRef, useEffect } from 'react';
 import { Send, User, Bot, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
+import type { ChatMessage } from '../../types';
 
 export default function OperatorChat() {
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'assistant', content: 'Operations Copilot online. How can I assist you with stadium intelligence today?' }
   ]);
   const [input, setInput] = useState('');
@@ -48,7 +45,7 @@ export default function OperatorChat() {
       } else {
         throw new Error(json.message);
       }
-    } catch (e: any) {
+    } catch {
       setMessages(prev => [...prev, { role: 'assistant', content: 'Connection error. Unable to reach AI services.' }]);
     } finally {
       setIsLoading(false);

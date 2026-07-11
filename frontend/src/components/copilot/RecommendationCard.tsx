@@ -1,5 +1,5 @@
-import { Check, X, Edit3, Loader2 } from 'lucide-react';
-import type { CopilotRecommendation } from '../../types';
+import { Check, X, Edit3, Loader2, BrainCircuit } from 'lucide-react';
+import type { CopilotRecommendation, CopilotAction } from '../../types';
 import RiskBadge from './RiskBadge';
 import ConfidenceMeter from './ConfidenceMeter';
 import ReasoningPanel from './ReasoningPanel';
@@ -49,8 +49,28 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
               </p>
             </div>
             
-            <EvidencePanel evidence={data.evidence} />
-            <ReasoningPanel reasoning={data.reasoning} />
+            {/* AI Explainability Module */}
+            <div className="p-4 rounded-xl border border-accent/20 bg-accent/5 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+              <h4 className="text-sm font-bold text-accent uppercase tracking-widest mb-4 flex items-center gap-2">
+                <BrainCircuit size={16} /> AI Explainability
+              </h4>
+              <div className="space-y-5">
+                <EvidencePanel evidence={data.evidence} />
+                <ReasoningPanel reasoning={data.reasoning} />
+                <div>
+                   <h5 className="text-[10px] font-semibold text-textSecondary uppercase tracking-wider mb-2">Decision Chain</h5>
+                   <div className="space-y-2 pl-2 border-l border-accent/30">
+                     {data.reasoning_chain?.map((step: string, i: number) => (
+                       <div key={i} className="flex items-start gap-2">
+                          <div className="w-4 h-4 rounded-full bg-accent/20 flex items-center justify-center text-[9px] text-accent font-bold shrink-0 mt-0.5">{i+1}</div>
+                          <p className="text-xs text-textSecondary">{step}</p>
+                       </div>
+                     ))}
+                   </div>
+                </div>
+              </div>
+            </div>
           </div>
           
           {/* Right Column */}
@@ -58,7 +78,7 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
             <div>
               <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Recommended Actions</h4>
               <div className="space-y-3">
-                {data.recommended_actions.map((action: any, i: number) => (
+                {data.recommended_actions.map((action: CopilotAction, i: number) => (
                   <div key={i} className="bg-primary/10 p-4 rounded-lg border border-primary/30 shadow-inner">
                     <div className="flex justify-between items-start mb-2">
                       <span className="font-semibold text-textPrimary">{action.action_id} - {action.assigned_role}</span>
@@ -75,7 +95,7 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
               <div>
                 <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-2">Alternative Actions</h4>
                 <div className="space-y-3 opacity-80">
-                  {data.alternative_actions.map((action: any, i: number) => (
+                  {data.alternative_actions.map((action: CopilotAction, i: number) => (
                     <div key={i} className="bg-surface p-4 rounded-lg border border-borderWhite/20 border-dashed">
                        <p className="text-sm text-textPrimary leading-snug mb-2">{action.description}</p>
                        <p className="text-xs text-textSecondary"><span className="font-semibold">Impact:</span> {action.expected_impact}</p>
@@ -94,17 +114,7 @@ export default function RecommendationCard({ data, status, onApprove, onReject, 
           </div>
         </div>
 
-        <div className="border-t border-borderWhite/20 pt-8 pb-4">
-            <h4 className="text-xs font-semibold text-textSecondary uppercase tracking-wider mb-4">AI Reasoning Chain</h4>
-            <div className="space-y-3 pl-2 border-l-2 border-primary/30">
-               {data.reasoning_chain?.map((step: string, i: number) => (
-                 <div key={i} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] text-primary shrink-0 mt-0.5">{i+1}</div>
-                    <p className="text-sm text-textSecondary">{step}</p>
-                 </div>
-               ))}
-            </div>
-        </div>
+
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 border-t border-borderWhite/20 pt-8">
           <VolunteerTasks tasks={data.volunteer_tasks} />

@@ -112,6 +112,8 @@ export default function CopilotPanel() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
               className="w-full h-full"
+              aria-live="polite"
+              aria-atomic="true"
             >
               <RecommendationCard 
                 data={data}

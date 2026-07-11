@@ -1,8 +1,10 @@
 import { fetchHeatmapData } from '../../services/dashboard';
+import type { HeatmapSector } from '../../types';
+import HeatmapNode from './HeatmapNode';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 import SkeletonLoader from '../ui/SkeletonLoader';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, memo, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 interface StadiumHeatmapProps {
   activeRoute?: { start: string; end: string } | null;
@@ -19,38 +21,10 @@ const getRiskColor = (risk: string) => {
   }
 };
 
-const HeatmapNode = memo(({ id, x, y, risk, name, density, prediction, recommendation, confidence, expected_crowd, queue_time, onHover, isHovered }: any) => {
-  const color = getRiskColor(risk);
-  
-  return (
-    <g 
-      onMouseEnter={() => onHover({ id, name, density, risk, x, y, prediction, recommendation, confidence, expected_crowd, queue_time })} 
-      onMouseLeave={() => onHover(null)}
-      className="cursor-pointer outline-none"
-      tabIndex={0}
-      role="button"
-      aria-label={`Sector ${name}, ${density}% full, Risk level ${risk}`}
-    >
-      {/* Outer Pulse */}
-      {isHovered && (
-        <circle cx={x} cy={y} r="20" fill={color} fillOpacity="0.2" className="animate-ping" />
-      )}
-      
-      {/* Base Node */}
-      <circle cx={x} cy={y} r="10" fill={color} stroke="var(--bg-surface)" strokeWidth="2" className="transition-all duration-300 hover:scale-125" style={{ transformOrigin: `${x}px ${y}px` }} />
-      
-      {/* Label */}
-      <text x={x} y={y + 25} fill="var(--text-primary)" fontSize="12" textAnchor="middle" fontWeight="bold" className="pointer-events-none drop-shadow-md">
-        {id}
-      </text>
-    </g>
-  );
-});
-
 export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heatmap", subtitle }: StadiumHeatmapProps) {
-  const [data, setData] = useState<any[] | null>(null);
+  const [data, setData] = useState<HeatmapSector[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [hoveredSector, setHoveredSector] = useState<any>(null);
+  const [hoveredSector, setHoveredSector] = useState<HeatmapSector | null>(null);
   const [showHeatmap, setShowHeatmap] = useState(true);
 
   const [predictionHorizon, setPredictionHorizon] = useState(0);
@@ -63,7 +37,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
         const res = await fetch(`${apiUrl}/api/v1/dashboard/predict?horizon=${horizon}`);
         const json = await res.json();
         // map prediction data back into the expected heatmap structure
-        const predictionData = json.data.map((p: any) => ({
+        const predictionData = json.data.map((p: Record<string, string | number>) => ({
             id: p.id,
             name: p.name,
             density: p.predicted_density,
@@ -88,7 +62,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
 
   useEffect(() => {
     let eventSource: EventSource | null = null;
-    let interval: any = null;
+    let interval: ReturnType<typeof setInterval> | null = null;
 
     if (predictionHorizon === 0) {
         // Attempt Server-Sent Events (SSE) connection for extreme efficiency for live data
@@ -206,7 +180,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
               <tr><th scope="col">Sector Name</th><th scope="col">Crowd Density</th><th scope="col">Risk Level</th></tr>
             </thead>
             <tbody>
-              {data?.map((sector: any) => (
+              {data?.map((sector: HeatmapSector) => (
                 <tr key={sector.id}><td>{sector.name} ({sector.id})</td><td>{sector.density}%</td><td>{sector.risk}</td></tr>
               ))}
             </tbody>
@@ -275,7 +249,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
             </AnimatePresence>
 
             {/* Data Nodes */}
-            {showHeatmap && data?.map((sector: any) => {
+            {showHeatmap && data?.map((sector: HeatmapSector) => {
               const coords = nodeCoords[sector.id] || { x: 400, y: 300 };
               return (
                 <HeatmapNode 

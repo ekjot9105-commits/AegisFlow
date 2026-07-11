@@ -32,45 +32,45 @@ export const fetchRecommendations = async (): Promise<CopilotRecommendation> => 
       incident_id: "INC-2026-004",
       risk_score: 85,
       confidence: 94,
-      situation_summary: "Severe overcrowding detected at North Gate 2. Density has reached 92% capacity.",
-      root_cause: "Simultaneous arrival of 3 metro trains within 5 minutes due to prior delays.",
+      situation_summary: "Predicted Crowd Surge at Transit Hub C due to Metro Line Delay.",
+      root_cause: "Metro Authority reported a 15-minute delay on the Red Line, causing a bottleneck of arriving fans at Transit Hub C.",
       evidence: [
-        "Sensor N2-CAM-01 reports 92% density.",
-        "Metro API indicates 3 arrivals between 14:10 and 14:15.",
-        "Ticketing API shows 5,000 un-scanned tickets for this sector."
+        "Metro API: Red Line Delay (15 mins).",
+        "Sensor TH-C-01 reports arriving crowd density increasing by 12%/min.",
+        "Historical Model: Delay at this time correlates with severe bottlenecks and loitering."
       ],
-      reasoning: "Given the rapid influx and finite scanning throughput, the queue will spill onto the main road within 8 minutes. Diverting traffic to East Plaza (currently at 65% capacity) will distribute the load and prevent a crush hazard.",
+      reasoning: "The sudden pause in transit flow will cause arriving fans to loiter, increasing congestion and associated carbon footprint from idling transport vehicles. Redirecting incoming fans to the newly opened Eco-Shuttle route and deploying volunteer guides will optimize transit flow and minimize unnecessary idling.",
       reasoning_chain: [
-        "Observed density at Gate N2 reached 92%.",
-        "Correlated with recent metro arrivals.",
-        "Historical data shows East Plaza is currently underutilized.",
-        "Rerouting will distribute the load and resolve the bottleneck."
+        "Detected 15-minute Metro delay via Transportation API.",
+        "Identified cascading crowd surge risk at Transit Hub C.",
+        "Calculated that loitering crowd will cause local transit gridlock and increase carbon footprint.",
+        "Formulated mitigation: Deploy Eco-Shuttles and redirect crowd."
       ],
       recommended_actions: [
         {
           action_id: "ACT-001",
-          description: "Reroute incoming metro foot traffic from N2 to East Plaza via electronic signage.",
+          description: "Deploy 5 Electric Eco-Shuttles from Reserve Fleet to Transit Hub C.",
           priority: "urgent",
-          expected_impact: "Reduce N2 density by 40%.",
-          assigned_role: "Operator"
+          expected_impact: "Optimized Public Transit Flow (Transportation)",
+          assigned_role: "Transport Coordinator"
         },
         {
           action_id: "ACT-002",
-          description: "Open 4 additional emergency scanning lanes at N2.",
+          description: "Reroute pedestrian traffic away from Hub C using digital signage.",
           priority: "high",
-          expected_impact: "Increase throughput by 15%.",
-          assigned_role: "Staff"
+          expected_impact: "Reduced crowd loitering / Carbon Offset (Sustainability)",
+          assigned_role: "Operator"
         }
       ],
       alternative_actions: [],
-      estimated_crowd_reduction: 40,
+      estimated_crowd_reduction: 45,
       volunteer_tasks: [
-        { task: "Form barricade and redirect crowd East", location: "N2 Approach Path" },
-        { task: "Prepare extra scanners", location: "N2 Security Check" }
+        { task: "Guide fans to Eco-Shuttle pickup points", location: "Transit Hub C" },
+        { task: "Manage shuttle boarding queues", location: "Shuttle Bay 1" }
       ],
       multilingual_announcement: [
-        { language: "English", message: "Attention fans. North Gate 2 is currently congested. Please proceed to East Plaza for faster entry." },
-        { language: "Spanish", message: "Atención aficionados. La Puerta Norte 2 está congestionada. Por favor, diríjase a la Plaza Este para una entrada más rápida." }
+        { language: "English", message: "Attention fans. Due to a Metro delay, please use the free Electric Eco-Shuttles available at Exit B for faster transport." },
+        { language: "Spanish", message: "Atención aficionados. Debido a un retraso en el Metro, utilicen los Eco-Shuttles eléctricos gratuitos en la Salida B para un transporte más rápido." }
       ]
     };
   }

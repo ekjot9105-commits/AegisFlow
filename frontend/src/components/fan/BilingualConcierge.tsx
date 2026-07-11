@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { MessageCircle, Globe, Send, User, Bot, Mic, Loader2, Radio } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { ChatMessage, Preset } from '../../types';
 
 const languages = [
   { code: 'en', name: 'English' },
@@ -11,7 +12,7 @@ const languages = [
   { code: 'bn', name: 'Bengali (বাংলা)' },
 ];
 
-const presets = [
+const presets: Preset[] = [
   { id: 'restroom', en: 'Where is the nearest restroom?', hi: 'शौचालय कहाँ है?', te: 'దగ్గరలో ఉన్న రెస్ట్‌రూమ్ ఎక్కడ ఉంది?', ta: 'அருகிலுள்ள கழிப்பறை எங்கே?', bn: 'কাছের শৌচাগার কোথায়?' },
   { id: 'gate', en: 'How do I reach Gate C?', hi: 'मैं गेट सी तक कैसे पहुँचूँ?', te: 'నేను గేట్ C కి ఎలా చేరుకోవాలి?', ta: 'நான் எப்படி கேட் சி-ஐ அடைவது?', bn: 'আমি কীভাবে গেট সিতে পৌঁছাব?' },
   { id: 'food', en: 'Shortest food court wait time?', hi: 'सबसे कम प्रतीक्षा समय वाला फ़ूड कोर्ट दिखाएं।', te: 'తక్కువ నిరీక్షణ సమయం ఉన్న ఫుడ్ కోర్ట్ చూపించు.', ta: 'குறைந்த காத்திருப்பு நேரம் கொண்ட உணவு விடுதியைக் காட்டு.', bn: 'সবচেয়ে কম অপেক্ষার সময় সহ ফুড কোর্ট দেখান।' }
@@ -74,14 +75,11 @@ const customSimulatedAnswers: Record<string, string[]> = {
   ]
 };
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
+
 
 export default function BilingualConcierge() {
   const [lang, setLang] = useState('en');
-  const [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'assistant', content: 'Hello! I am your Bilingual Fan Concierge. How can I help you today?' }
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -110,7 +108,7 @@ export default function BilingualConcierge() {
       };
       setMessages([{ role: 'assistant', content: welcomeMap[lang] || welcomeMap['en'] }]);
     }
-  }, [lang]);
+  }, [lang, messages.length]);
 
   const speakText = (text: string, langCode: string) => {
     if (!window.speechSynthesis) return;
@@ -123,8 +121,8 @@ export default function BilingualConcierge() {
     window.speechSynthesis.speak(utterance);
   };
 
-  const handlePresetClick = (preset: any) => {
-    const userQuery = preset[lang] || preset['en'];
+  const handlePresetClick = (preset: Preset) => {
+    const userQuery = (preset as unknown as Record<string, string>)[lang] || preset.en;
     setMessages(prev => [...prev, { role: 'user', content: userQuery }]);
     setIsTyping(true);
     
@@ -256,7 +254,7 @@ export default function BilingualConcierge() {
               onClick={() => handlePresetClick(preset)}
               className="whitespace-nowrap px-3 py-1.5 text-xs bg-surface border border-borderWhite/20 hover:border-primary/50 text-textSecondary hover:text-primary rounded-full transition-colors flex items-center gap-1.5"
             >
-              <MessageCircle size={12} /> {(preset as any)[lang] || preset.en}
+              <MessageCircle size={12} /> <span className="text-sm font-medium">{(preset as unknown as Record<string, string>)[lang] || preset.en}</span>
             </button>
           ))}
         </div>
