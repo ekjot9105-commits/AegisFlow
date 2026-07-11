@@ -1,9 +1,7 @@
 import type { CopilotRecommendation } from '../types';
-
+import { config } from '../config';
 
 export const fetchRecommendations = async (): Promise<CopilotRecommendation> => {
-  const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-  
   const payload = {
     incident_id: "INC-AUTO-999",
     telemetry: [],
@@ -11,11 +9,11 @@ export const fetchRecommendations = async (): Promise<CopilotRecommendation> => 
   };
 
   try {
-    const response = await fetch(`${apiUrl}/api/v1/copilot/analyze`, {
+    const response = await fetch(`${config.apiUrl}/api/v1/copilot/analyze`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer mock_dev_token_123'
+        'Authorization': `Bearer ${config.apiToken}`
       },
       body: JSON.stringify(payload)
     });

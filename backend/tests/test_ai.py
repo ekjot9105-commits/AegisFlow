@@ -8,7 +8,7 @@ def test_ai_copilot_service_mock():
     # Example test validating robust AI handling
     mock_llm_response = {"recommendation": "Deploy rapid response to North Gate"}
 
-    with patch("services.ai.analyze_telemetry") as mock_analyze:
+    with patch("backend.ai.core.get_ai_service") as mock_analyze:
         mock_analyze.return_value = mock_llm_response
         result = mock_analyze({"density": 95, "location": "North Gate"})
 
@@ -19,12 +19,12 @@ def test_ai_copilot_service_mock():
 def test_ai_copilot_fallback():
     # Test fallback mechanism on AI failure
     with patch(
-        "services.ai.analyze_telemetry", side_effect=Exception("API limit reached")
+        "backend.ai.core.get_ai_service", side_effect=Exception("API limit reached")
     ):
         try:
             # The service should ideally catch this, but if we're just asserting the mock behaviour:
-            from services.ai import analyze_telemetry
+            from backend.ai.core import get_ai_service
 
-            analyze_telemetry({})
+            get_ai_service({})
         except Exception as e:
             assert str(e) == "API limit reached"

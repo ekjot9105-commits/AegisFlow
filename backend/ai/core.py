@@ -16,10 +16,11 @@ from pydantic import BaseModel
 import google.generativeai as genai
 from tenacity import (
     retry,
-    wait_exponential,
     stop_after_attempt,
+    wait_exponential,
     retry_if_exception_type,
 )
+from backend.config import settings
 
 T = TypeVar("T", bound=BaseModel)
 
@@ -163,17 +164,7 @@ class GeminiService(AICoreInterface):
 
 def get_ai_service(use_mock: Optional[bool] = None) -> AICoreInterface:
     """Factory to retrieve the appropriate AI service implementation."""
-    api_key = os.getenv("GOOGLE_API_KEY")
-
-    # If use_mock is not explicitly set, determine based on env
-    if use_mock is None:
-        use_mock = not api_key
-
     if use_mock:
         return MockGeminiService()
 
-    if not api_key:
-        print("WARNING: GOOGLE_API_KEY not found. Falling back to MockGeminiService.")
-        return MockGeminiService()
-
-    return GeminiService(api_key=api_key)
+    return GeminiService(api_key=settings.GOOGLE_API_KEY)

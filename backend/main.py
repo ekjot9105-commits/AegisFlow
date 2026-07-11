@@ -25,6 +25,7 @@ from backend.db.schemas import APIResponse
 from backend.api.routers import copilot, dashboard, chat
 import jwt
 import os
+from backend.config import settings
 
 # Configure slowapi for rate limiting
 limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
@@ -66,9 +67,8 @@ class MockAuthMiddleware(BaseHTTPMiddleware):
 
             token = auth.split("Bearer ")[1]
             try:
-                # Use PyJWT with an environment secret (falling back to a default for demo only)
-                secret = os.getenv("JWT_SECRET", "super_secure_fifa_secret_2026")
-                payload = jwt.decode(token, secret, algorithms=["HS256"])
+                # Use centralized secure config
+                payload = jwt.decode(token, settings.JWT_SECRET, algorithms=["HS256"])
                 request.state.user = payload
             except jwt.ExpiredSignatureError:
                 return JSONResponse(
@@ -78,16 +78,14 @@ class MockAuthMiddleware(BaseHTTPMiddleware):
                     ).model_dump(),
                 )
             except jwt.InvalidTokenError:
-                # Mock fallback for development if token is literally 'mock_dev_token_123'
-                if token != "mock_dev_token_123":
-                    return JSONResponse(
-                        status_code=401,
-                        content=APIResponse(
-                            success=False,
-                            message="Unauthorized - Invalid Token",
-                            data=None,
-                        ).model_dump(),
-                    )
+                return JSONResponse(
+                    status_code=401,
+                    content=APIResponse(
+                        success=False,
+                        message="Unauthorized - Invalid Token",
+                        data=None,
+                    ).model_dump(),
+                )
         return await call_next(request)
 
 

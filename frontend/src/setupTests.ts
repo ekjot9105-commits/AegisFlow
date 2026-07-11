@@ -31,3 +31,16 @@ Object.defineProperty(window, 'matchMedia', {
     dispatchEvent: () => false,
   }),
 });
+
+// Mock Global Fetch to prevent actual network calls during tests
+const mockFetchResponse = {
+  ok: true,
+  json: async () => ({
+    success: true,
+    data: {
+      recommendation: "Mocked AI Recommendation",
+      confidence: 95
+    }
+  }),
+};
+vi.stubGlobal('fetch', vi.fn().mockResolvedValue(mockFetchResponse));

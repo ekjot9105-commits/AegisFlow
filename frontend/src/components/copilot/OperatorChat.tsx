@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, User, Bot, Loader2 } from 'lucide-react';
+import { config } from '../../config';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import type { ChatMessage } from '../../types';
@@ -29,12 +30,11 @@ export default function OperatorChat() {
     setIsLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${apiUrl}/api/v1/chat/query`, {
+      const res = await fetch(`${config.apiUrl}/api/v1/chat/query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer mock_dev_token_123'
+          'Authorization': `Bearer ${config.apiToken}`
         },
         body: JSON.stringify({ query: userQuery, history: messages })
       });

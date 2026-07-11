@@ -4,6 +4,8 @@ import StadiumMap from './StadiumMap';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
 import SkeletonLoader from '../ui/SkeletonLoader';
 import { motion, AnimatePresence } from 'framer-motion';
+
+import { config } from '../../config';
 import { useState, useEffect } from 'react';
 
 interface StadiumHeatmapProps {
@@ -42,8 +44,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
   const fetchMockData = async (horizon: number = 0) => {
     try {
       if (horizon > 0) {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-        const res = await fetch(`${apiUrl}/api/v1/dashboard/predict?horizon=${horizon}`);
+        const res = await fetch(`${config.apiUrl}/api/v1/dashboard/predict?horizon=${horizon}`);
         const json = await res.json();
         // map prediction data back into the expected heatmap structure
         const predictionData = json.data.map((p: Record<string, string | number>) => ({
@@ -75,8 +76,7 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
 
     if (predictionHorizon === 0) {
         // Attempt Server-Sent Events (SSE) connection for extreme efficiency for live data
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
-        eventSource = new EventSource(`${apiUrl}/api/v1/dashboard/heatmap/stream`);
+        eventSource = new EventSource(`${config.apiUrl}/api/v1/dashboard/heatmap/stream`);
         
         eventSource.onmessage = (event) => {
           try {
