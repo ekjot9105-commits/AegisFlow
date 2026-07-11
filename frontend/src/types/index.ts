@@ -35,6 +35,7 @@ export interface HeatmapSector {
   name: string;
   density: number;
   risk: 'low' | 'medium' | 'high' | 'critical';
+  trend?: 'up' | 'down' | 'stable';
   prediction?: string;
   queue_time?: string;
   recommendation?: string;

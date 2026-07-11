@@ -12,6 +12,8 @@ Before any data reaches the Generative AI models, it passes through the `sanitiz
 - Financial information
 - Exact seat coordinates (when anonymized reporting is required)
 
+*(Architectural Note: The current prototype implementation of `sanitizer.py` utilizes a fast regex and a hardcoded list of placeholder names for basic redaction. In a production environment, this module is designed to be seamlessly swapped with robust Named Entity Recognition (NER) models such as AWS Comprehend or spaCy to ensure comprehensive PII masking without impacting the overall architecture.)*
+
 ### 2. Prompt Injection Defense
 The backend AI agents utilize strict system prompts and bounded parameter inputs. The API validates all inputs against expected schemas (Pydantic), neutralizing prompt injection attempts before they reach the LLM.
 

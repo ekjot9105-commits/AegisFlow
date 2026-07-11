@@ -56,5 +56,8 @@ To test the production build locally:
 2. Run the backend:
    ```bash
    cd backend
+   # Ensure Python can resolve the local modules (e.g., from backend.api import ...)
+   export PYTHONPATH=$PWD
+   # Alternatively on Windows PowerShell: $env:PYTHONPATH = $PWD
    ENVIRONMENT=production uvicorn main:app --host 0.0.0.0 --port 8000
    ```

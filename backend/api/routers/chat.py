@@ -5,13 +5,16 @@ from typing import List
 
 router = APIRouter(prefix="/api/v1/chat", tags=["Chat"])
 
+
 class ChatMessage(BaseModel):
     role: str
     content: str
 
+
 class ChatQueryRequest(BaseModel):
     query: str
     history: List[ChatMessage] = []
+
 
 @router.post("/query")
 async def process_chat_query(request: ChatQueryRequest):
@@ -21,9 +24,9 @@ async def process_chat_query(request: ChatQueryRequest):
     """
     # Simulate AI processing delay
     await asyncio.sleep(1.2)
-    
+
     query = request.query.lower()
-    
+
     # Mock intelligent responses based on intent
     if "gate 4" in query and "crowd" in query:
         response = "Gate 4 is crowded due to an unexpected arrival of 500+ passengers from the East Metro Station. Mitigation protocol ACT-001 (Rerouting to Gate 5) is recommended."
@@ -37,7 +40,5 @@ async def process_chat_query(request: ChatQueryRequest):
     return {
         "success": True,
         "message": "Query processed",
-        "data": {
-            "response": response
-        }
+        "data": {"response": response},
     }

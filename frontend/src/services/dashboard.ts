@@ -8,14 +8,7 @@ export interface KPIData {
   averageResponseTime: string;
 }
 
-export interface SectorData {
-  id: string;
-  name: string;
-  density: number;
-  risk: 'low' | 'medium' | 'high' | 'critical';
-  trend: 'up' | 'down' | 'stable';
-}
-
+import type { HeatmapSector } from '../types';
 export interface TimelineEvent {
   id: string;
   timestamp: string;
@@ -48,7 +41,7 @@ export const fetchKPIData = async (): Promise<KPIData> => {
   };
 };
 
-export const fetchHeatmapData = async (): Promise<SectorData[]> => {
+export const fetchHeatmapData = async (): Promise<HeatmapSector[]> => {
   await new Promise(resolve => setTimeout(resolve, 1000));
   return [
     { id: 'N1', name: 'North Gate 1', density: 45, risk: 'low', trend: 'stable' },

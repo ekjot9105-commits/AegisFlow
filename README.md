@@ -60,7 +60,7 @@ graph LR
 |---|---|
 | **Frontend** | React, TypeScript, Vite, Tailwind CSS, Zustand, Framer Motion |
 | **Backend** | Python, FastAPI, Pydantic, Uvicorn |
-| **Database** | In-Memory (for prototype demo), Redis (for caching in prod) |
+| **Database** | In-Memory LRU Cache (Prototype) / Redis (Planned for Prod) |
 | **AI** | Google Gemini API, Semantic Embeddings |
 | **Testing** | Pytest (Backend), ESLint/TypeScript (Frontend) |
 | **Deployment** | Netlify (Frontend), Render (Backend) |
@@ -81,13 +81,17 @@ AegisFlow/
 │   └── requirements.txt  # Python Dependencies
 ├── frontend/
 │   ├── src/
+│   │   ├── assets/       # Static assets (images, fonts)
 │   │   ├── components/   # React UI Components
+│   │   ├── data/         # Mock data and configurations
 │   │   ├── hooks/        # Custom React Hooks
 │   │   ├── layouts/      # Dashboard & App Layouts
 │   │   ├── pages/        # Main Application Views
 │   │   ├── services/     # API Integration Services
 │   │   ├── store/        # Zustand State Management
-│   │   └── styles/       # Tailwind & Global CSS
+│   │   ├── styles/       # Tailwind & Global CSS
+│   │   ├── types/        # TypeScript Interfaces and Types
+│   │   └── utils/        # Helper and utility functions
 │   ├── package.json      # Node Dependencies
 │   └── vite.config.ts    # Vite Configuration
 ├── .github/              # CI/CD Workflows
