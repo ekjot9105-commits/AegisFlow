@@ -63,8 +63,8 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
         const mockData = await fetchHeatmapData();
         setData(mockData);
       }
-    } catch (e) {
-      console.error('Failed to fetch data', e);
+    } catch {
+      // Failed to fetch data
     } finally {
       setIsLoading(false);
     }
@@ -83,14 +83,13 @@ export default function StadiumHeatmap({ activeRoute, title = "Live Stadium Heat
             const parsed = JSON.parse(event.data);
             setData(parsed);
             setIsLoading(false);
-          } catch (err) {
-            console.error("SSE parse error", err);
+          } catch {
+            // Ignore parse errors in production
           }
         };
 
         eventSource.onerror = () => {
           // If backend SSE is down, fallback to mock polling
-          console.warn("SSE connection failed, falling back to mock polling.");
           eventSource?.close();
           fetchMockData(0);
           interval = setInterval(() => fetchMockData(0), 5000);

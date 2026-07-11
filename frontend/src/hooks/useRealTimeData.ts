@@ -26,7 +26,6 @@ export function useRealTimeData<T>({ url, queryKey, fallbackPollingInterval = 50
           if (!isMounted) return;
           setIsConnected(true);
           reconnectAttempts.current = 0; // Reset on success
-          console.log(`[WebSocket] Connected to ${url}`);
         };
 
         ws.onmessage = (event) => {
@@ -34,8 +33,8 @@ export function useRealTimeData<T>({ url, queryKey, fallbackPollingInterval = 50
           try {
             const data: T = JSON.parse(event.data);
             queryClient.setQueryData(queryKey, data);
-          } catch (e) {
-            console.error('[WebSocket] Failed to parse message', e);
+          } catch {
+            // Ignore parse errors in production
           }
         };
 
@@ -45,18 +44,16 @@ export function useRealTimeData<T>({ url, queryKey, fallbackPollingInterval = 50
           
           // Exponential backoff: min(1000 * 2^attempts, 30000)
           const delay = Math.min(1000 * Math.pow(2, reconnectAttempts.current), 30000);
-          console.log(`[WebSocket] Disconnected. Reconnecting in ${delay}ms...`);
           
           reconnectAttempts.current += 1;
           reconnectTimeout = setTimeout(connect, delay);
         };
 
-        ws.onerror = (error) => {
-          console.error('[WebSocket] Error', error);
+        ws.onerror = () => {
           ws.close();
         };
-      } catch (error) {
-        console.error('[WebSocket] Connection failed', error);
+      } catch {
+        // Connection failed
       }
     };
 

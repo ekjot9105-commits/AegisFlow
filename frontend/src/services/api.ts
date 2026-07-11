@@ -25,14 +25,9 @@ api.interceptors.response.use(
   (error) => {
     // Global Error Handler
     if (error.response) {
-      console.error('API Error:', error.response.data);
       if (error.response.status === 401) {
         // Handle unauthorized
       }
-    } else if (error.request) {
-      console.error('Network Error:', error.request);
-    } else {
-      console.error('Request Error:', error.message);
     }
     return Promise.reject(error);
   }

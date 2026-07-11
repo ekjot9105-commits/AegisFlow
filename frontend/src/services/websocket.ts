@@ -35,8 +35,8 @@ export function useWebSocket<T>(url: string): UseWebSocketResult<T> {
           try {
             const parsedData = JSON.parse(event.data);
             setData(parsedData);
-          } catch (e) {
-            console.error('WebSocket parse error', e);
+          } catch {
+            // Ignore parse errors in production
           }
         };
 
